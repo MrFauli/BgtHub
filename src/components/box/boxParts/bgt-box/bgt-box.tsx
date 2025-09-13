@@ -6,8 +6,8 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const bgtList = ["cool","spannend","einzigartig"];
 
 function BgtBox(){
-    const [typeEffectOn,setTypeEffectOn] = useState(true);
-    setTypeEffectOn(true);
+    const typeEffectOn = true;
+    
     const [typedText, setTypedText] =useState("");
     const [typeLineOn,setTypeLineOn] = useState(true);
     const randomNumber= ()=> {

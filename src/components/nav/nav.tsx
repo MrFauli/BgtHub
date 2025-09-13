@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import MenuIcon from '../../assets/burger-menu.svg';
+import MenuIcon from '/assets/burger-menu.svg';
 import './nav.css';
 import {NavLink} from 'react-router-dom';
 function Nav(){

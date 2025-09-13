@@ -15,9 +15,10 @@ function BlogPreview({post}:BlogPreviewProps){
         
             <div id={`Article${post.id}`} className="slide">
                 <Link to={"/projekte/"+post.slug}>
-                    <div className="imgContainer"><img className="preview-pic" src={post.coverImage} /></div>
+                    <div className="imgContainer"><img className="preview-pic" src={`${window.location.origin}${post.coverImage}`} /></div>
                     <div className="preview-infos">
                         <Tag tags={post.tag}/>
+                        
                         <div className="publish-year">{post.date}</div>
                         <h3 className="project-name">{post.title}</h3>
                         <div className="preview-text">{post.summary}</div>

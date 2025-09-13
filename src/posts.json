@@ -9,7 +9,7 @@
     "author": "Max Mustermann",
     "tag": ["Medien", "Technik"],
     "summary": "Dies ist eine kurze Zusammenfassung des Artikels, die z. B. in der Vorschau angezeigt wird.",
-    "coverImage": "/src/assets/los_bts.jpg",
+    "coverImage": "/assets/los_bts.jpg",
     "content": [
       {
         "type": "paragraph",
@@ -17,7 +17,7 @@
       },
       {
         "type": "image",
-        "src": "/src/assets/los_bts.jpg",
+        "src": "/assets/los_bts.jpg",
         "alt": "Ein Beispielbild",
         "caption": "Dies ist die Bildunterschrift"
       },
@@ -45,7 +45,7 @@
     "author": "Max Mustermann",
     "tag": ["Technik","Bananen"],
     "summary": "Dies platzhalter platzhalter platzhalter Artikels, die z. B. in der Vorschau angezeigt wird.",
-    "coverImage": "/src/assets/los_bts.jpg",
+    "coverImage": "/assets/los_bts.jpg",
     "content": [
       {
         "type": "paragraph",
@@ -53,7 +53,7 @@
       },
       {
         "type": "image",
-        "src": "/src/assets/los_bts.jpg",
+        "src": "/assets/los_bts.jpg",
         "alt": "Ein Beispielbild",
         "caption": "Dies ist die Bildunterschrift"
       },
@@ -81,7 +81,7 @@
     "author": "Max Mustermann",
     "tag": ["Medien", "JavaScript"],
     "summary": "Dieswasdfasdf fagasd ddsalter Artikels, die z. B. in der Vorschau angezeigt wird.",
-    "coverImage": "/src/assets/holle_lowen.png",
+    "coverImage": "/assets/holle_lowen.png",
     "content": [
       {
         "type": "paragraph",
@@ -89,7 +89,7 @@
       },
       {
         "type": "image",
-        "src": "/src/assets/los_bts.jpg",
+        "src": "/assets/los_bts.jpg",
         "alt": "Ein Beispielbild",
         "caption": "Dies ist die Bildunterschrift"
       },
@@ -116,7 +116,7 @@
     "author": "Jeff Bezos",
     "tag": ["Informatik", "Technik"],
     "summary": "Etwas schönes steht in diesem artikel, doch nur triantis weiß es(nicht).",
-    "coverImage": "/src/assets/los_ai.png",
+    "coverImage": "/assets/los_ai.png",
     "content": [
       {
         "type": "paragraph",
@@ -124,7 +124,7 @@
       },
       {
         "type": "image",
-        "src": "/src/assets/los_bts.jpg",
+        "src": "/assets/los_bts.jpg",
         "alt": "Ein Beispielbild",
         "caption": "Dies ist die Bildunterschrift"
       },
@@ -152,7 +152,7 @@
     "author": "Giani Triantis",
     "tag": ["Informatik", "Technik"],
     "summary": "Etwas schönes steht in diesem artikel, doch nur triantis weiß es(nicht).",
-    "coverImage": "/src/assets/holle_lowen.png",
+    "coverImage": "/assets/holle_lowen.png",
     "content": [
       {
         "type": "heading",
@@ -196,7 +196,7 @@
       },
       {
         "type": "image",
-        "src": "/src/assets/los_ai.png",
+        "src": "/assets/los_ai.png",
         "alt": "Ein Beispielbild",
         "caption": "Dies ist die Bildunterschrift"
       }
