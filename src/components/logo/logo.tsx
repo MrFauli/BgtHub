@@ -1,4 +1,4 @@
-import React from 'react';
+
 import logo from '../../assets/bbs-me.svg'
 import './logo.css';
 import { Link } from 'react-router-dom';

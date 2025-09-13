@@ -1,4 +1,4 @@
-import React from 'react';
+
 import './projekt-box.css'
 import Box from '../../box';
 import ActionBtn from '../../../actionbtn/actionbtn';

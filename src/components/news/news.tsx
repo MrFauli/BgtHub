@@ -7,7 +7,7 @@ import type {postObj} from '../../types/posts';
 import './news.css';
 
 function News(){
-    const [postsNum,setPostsNum] = useState(Posts.length);
+    const postsNum= Posts.length;
     const [touchStart,setTouchStart] = useState(0)
     const [touchEnd,setTouchEnd] = useState(0);
     const [slide,setSlide] = useState(1);

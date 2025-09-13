@@ -1,4 +1,4 @@
-import React from "react";
+
 import './tag.css';
 type Props = {
   tags: string[];

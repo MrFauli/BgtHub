@@ -1,4 +1,4 @@
-import React,{useEffect, useState, useRef} from "react";
+import {useEffect, useState, useRef} from "react";
 import Box from "../../box";
 import './bgt-box.css';
 import ActionBtn from "../../../actionbtn/actionbtn";
@@ -7,6 +7,7 @@ const bgtList = ["cool","spannend","einzigartig"];
 
 function BgtBox(){
     const [typeEffectOn,setTypeEffectOn] = useState(true);
+    setTypeEffectOn(true);
     const [typedText, setTypedText] =useState("");
     const [typeLineOn,setTypeLineOn] = useState(true);
     const randomNumber= ()=> {

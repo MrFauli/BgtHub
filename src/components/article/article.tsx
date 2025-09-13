@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import {useEffect} from "react";
 import type {postObj} from '../../types/posts';
 import type {ContentBlock} from '../../types/content';
 import { Link,useParams } from "react-router-dom";
@@ -55,7 +55,7 @@ function Article(){
             <h1 className="title">{post?.title}</h1>
         </section>
         <section className="content">
-            {post?.content.map((content, index) => createContent(content))}
+            {post?.content.map((content) => createContent(content))}
         </section>
 
 

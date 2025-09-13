@@ -1,4 +1,4 @@
-import React from "react";
+
 import './left-btn.css';
 type Props = {
   onclick: () => void;

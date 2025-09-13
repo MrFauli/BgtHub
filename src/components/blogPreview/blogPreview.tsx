@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+
 import type { postObj } from '../../types/posts';
 import './blogPreview.css';
 import { Link } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import {useState} from 'react';
 import MenuIcon from '../../assets/burger-menu.svg';
 import './nav.css';
 import {NavLink} from 'react-router-dom';

@@ -1,6 +1,4 @@
-import { useState,useEffect } from 'react'
-import { useLocation } from "react-router-dom";
-import Header from './components/header/header';
+
 import Body from './components/body/body';
 import './App.css';
 import ProjektSide from './components/projekte-side/projekte-side';
@@ -24,7 +22,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 
 ));
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>

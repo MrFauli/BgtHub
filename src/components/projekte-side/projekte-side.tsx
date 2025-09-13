@@ -1,10 +1,10 @@
-import React,{useState} from 'react';
+import {useState} from 'react';
 import Posts from '../../posts.json';
 import BlogPreview from '../blogPreview/blogPreview';
 import type { postObj } from '../../types/posts';
 import './projekt-side.css';
 function ProjektSide(){
-    const [postsNum,setPostsNum] = useState(Posts.length);
+
     const [filter,setFilter] = useState("")
     return(
         <div>

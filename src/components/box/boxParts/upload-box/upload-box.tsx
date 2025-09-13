@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Box from '../../box';
 import ActionBtn from '../../../actionbtn/actionbtn';
 import './upload-box.css'
