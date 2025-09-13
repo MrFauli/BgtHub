@@ -9,18 +9,10 @@ import Article from './components/article/article';
 import AuthorProjects from './components/author-projects/author-projects';
 import { Route,RouterProvider,createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
 const router = createBrowserRouter(createRoutesFromElements(
-  <ScrollToTop />
-  <Routes>
+  
+
   <Route path="/" element={<Body/>}>
     
      <Route index element={<LandingPage />} />
@@ -29,7 +21,7 @@ const router = createBrowserRouter(createRoutesFromElements(
      <Route path="/projekte/:article" element={<Article/>}/>
      <Route path="/projekte/:article/:author" element={<AuthorProjects/>}/>
   </Route>
-  </Routes>
+
 ));
 function App() {
   const [count, setCount] = useState(0)

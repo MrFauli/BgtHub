@@ -22,7 +22,7 @@ function BlogPreview({post}:BlogPreviewProps){
                         <h3 className="project-name">{post.title}</h3>
                         <div className="preview-text">{post.summary}</div>
                         <div className="author">{post.author}</div>
-                    </div>
+                    </div>   
                 </Link>
             </div>
         
