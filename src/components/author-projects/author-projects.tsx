@@ -9,7 +9,7 @@ function AuthorProjects(){
     return(
         <div>
             {articles.map((article)=>(
-                <h1><Link to={`/${article.slug}`}>{article.title}</Link></h1>
+                <h1><Link to={`/projekte/${article.slug}`}>{article.title}</Link></h1>
             ))}
         </div>
     )
