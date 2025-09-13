@@ -1,69 +1,19 @@
-# React + TypeScript + Vite
+# BGT Project Hub
+Dieses Projekt soll einer Webseite für das Berufliche Gymnasium Technik werden.
+Es soll den Schülern die Möglichkeit geben, ihre Projekte mit der Öffentlichkeit zu teilen und auf dauer sowohl als Werbemöglichkeit dienen, als auch anderen das nachbauen dieser Projekte ermöglichen.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- [Website der BBS-ME](https://bbs-me.de)   
 
-Currently, two official plugins are available:
+## Was in naher Zeit kommt
+Zum jetzigen Zeitpunkt(9/25) besteht die Webseite aus einer Landing Page wie auch einer Übersicht von Projekt Artikeln.
+Folgende Funktionen sollen hinzu kommen:
+- Suchfunktion nach Artikeln
+- Artikelmaske zum schreiben eigener Artikel
+- Datenbank zum speichern der Artikel
+- Login System, um zu verifizieren das nur Schüler des BGT's Artikel veröffentlichen können
+- Erweiterung der Artikel von alleiniger Beschreibung auf teilen von Plänen, Code wie auch einer Anleitung zum nachbauen
+- Werbeseite und Infoseite für das BGT mit aufzeigen aller Vorteile des BGT's
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Hinweis
+Dieses Projekt ist zum jetzigen Zeitpunkt weder mit der BBS-ME abgesprochen noch läuft es unter ihrem Namen. Dieses Projekt ist derzeit ein reines Gedankenspiel welches ich privat ausbaue.
