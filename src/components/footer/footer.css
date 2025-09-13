@@ -1,0 +1,22 @@
+footer{
+    background-color: #b4b4b4;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    text-align: left;
+}
+@media only screen and (min-width:600px) and (max-width:900px) {
+    footer{
+        display: flex;
+        justify-content: space-between;
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+}
+@media only screen and (min-width:900px){
+    footer{
+        display: flex;
+        justify-content: space-between;
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}

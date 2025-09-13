@@ -1,0 +1,34 @@
+#type-line{
+    margin-left: 2px;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    display: inline-block;
+    align-self: flex-end;
+    height: 1.4rem;
+    width: 1.5px;
+    background: black;
+
+}
+@keyframes animation_blink{
+    0%,50%{opacity: 1; }
+    50.01%,100%{opacity: 0;}
+}
+.blink{
+    animation-name:animation_blink ;
+}
+#typing-box{
+    display: inline-flexbox;
+    margin-bottom: 8px;
+}
+#typing-box h1{
+    font-weight: 400;
+}
+ @media only screen and (min-width:900px){
+    #bgt-box{
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        
+        
+    }
+}

@@ -1,0 +1,25 @@
+
+.info-btn:hover{
+    transition: background-color 0.2s ease, transform 0.1s ease;
+     filter: brightness(110%); /* 10% heller */
+}
+.info-btn:active{
+    transition: background-color 0.2s ease, transform 0.1s ease;
+      filter: brightness(110%); /* 10% heller */
+    transform: scale(0.97);
+}
+.info-btn{
+       
+    margin-top: 8px;
+    width: 100%;
+    padding: 8px;
+    text-align: center;
+    border-radius: 8px;
+
+    font-size: large;
+    font-weight: bold;
+    border: none;
+    color: white;
+    box-shadow: 0 0 8px rgba(137, 140, 145, 0.7);
+    transition: background-color 0.2s ease;
+}

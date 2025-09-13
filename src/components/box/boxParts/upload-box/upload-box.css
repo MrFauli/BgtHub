@@ -1,0 +1,12 @@
+ #upload-box{
+    margin-bottom: 3rem;
+ }
+ @media only screen and (min-width:900px){
+    #upload-box{
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        
+        
+    }
+}

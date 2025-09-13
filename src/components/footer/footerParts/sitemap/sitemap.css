@@ -1,0 +1,12 @@
+.sitemap ul{
+    list-style: none;
+}
+.sitemap ul li{
+    margin: 8px 0;
+}
+.sitemap h3{
+    font-weight: 600;
+    opacity: 0.6;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}

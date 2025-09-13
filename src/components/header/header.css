@@ -1,0 +1,22 @@
+header{
+    display: flex;
+    height: 4.5rem;
+    justify-content: space-between;
+    padding: 16px;
+}
+@media only screen and (min-width:600px) and (max-width:900px) {
+    header{
+        padding-left: 15%;
+        padding-right: 15%;
+
+    }
+}
+@media only screen and (min-width:900px){
+    header{
+       
+        
+         padding-left: 20%;
+        padding-right: 20%;
+        
+    }
+}

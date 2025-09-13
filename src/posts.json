@@ -1,0 +1,205 @@
+
+[
+  {
+    "id": 1,
+    "title": "Mein erster Artikel",
+    "slug": "mein-erster-artikel",
+    "date": "2025/26",
+    "grade":13,
+    "author": "Max Mustermann",
+    "tag": ["Medien", "Technik"],
+    "summary": "Dies ist eine kurze Zusammenfassung des Artikels, die z. B. in der Vorschau angezeigt wird.",
+    "coverImage": "/src/assets/los_bts.jpg",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Das ist der erste Absatz deines Artikels."
+      },
+      {
+        "type": "image",
+        "src": "/src/assets/los_bts.jpg",
+        "alt": "Ein Beispielbild",
+        "caption": "Dies ist die Bildunterschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Hier geht der Text weiter ..."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Zwischenüberschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Noch mehr Text ..."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Mein zweiter Artikel",
+    "slug": "mein-zweiter-artikel",
+    "date": "2025/26",
+    "grade":13,
+    "author": "Max Mustermann",
+    "tag": ["Technik","Bananen"],
+    "summary": "Dies platzhalter platzhalter platzhalter Artikels, die z. B. in der Vorschau angezeigt wird.",
+    "coverImage": "/src/assets/los_bts.jpg",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Das ist der erste Absatz deines Artikels."
+      },
+      {
+        "type": "image",
+        "src": "/src/assets/los_bts.jpg",
+        "alt": "Ein Beispielbild",
+        "caption": "Dies ist die Bildunterschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Hier geht der Text weiter ..."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Zwischenüberschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Noch mehr Text ..."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Los gehts",
+    "slug": "los-gehts",
+    "date": "2025/26",
+    "grade":13,
+    "author": "Max Mustermann",
+    "tag": ["Medien", "JavaScript"],
+    "summary": "Dieswasdfasdf fagasd ddsalter Artikels, die z. B. in der Vorschau angezeigt wird.",
+    "coverImage": "/src/assets/holle_lowen.png",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Das ist der erste Absatz deines Artikels."
+      },
+      {
+        "type": "image",
+        "src": "/src/assets/los_bts.jpg",
+        "alt": "Ein Beispielbild",
+        "caption": "Dies ist die Bildunterschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Hier geht der Text weiter ..."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Zwischenüberschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Noch mehr Text ..."
+      }
+    ]
+  },  {
+    "id": 4,
+    "title": "krassester Artikel",
+    "slug": "krassester-artikel",
+    "date": "2024/25",
+    "grade":12,
+    "author": "Jeff Bezos",
+    "tag": ["Informatik", "Technik"],
+    "summary": "Etwas schönes steht in diesem artikel, doch nur triantis weiß es(nicht).",
+    "coverImage": "/src/assets/los_ai.png",
+    "content": [
+      {
+        "type": "paragraph",
+        "text": "Das ist der erste Absatz deines Artikels."
+      },
+      {
+        "type": "image",
+        "src": "/src/assets/los_bts.jpg",
+        "alt": "Ein Beispielbild",
+        "caption": "Dies ist die Bildunterschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Hier geht der Text weiter ..."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Zwischenüberschrift"
+      },
+      {
+        "type": "paragraph",
+        "text": "Noch mehr Text ..."
+      }
+    ]
+  },
+   {
+    "id":5,
+    "title": "Start-up-Fieber in der 11A – Willkommen in der Schulhöhle der Löwen",
+    "slug": "start-up-fieber",
+    "date": "2024/25",
+    "grade":11,
+    "author": "Giani Triantis",
+    "tag": ["Informatik", "Technik"],
+    "summary": "Etwas schönes steht in diesem artikel, doch nur triantis weiß es(nicht).",
+    "coverImage": "/src/assets/holle_lowen.png",
+    "content": [
+      {
+        "type": "heading",
+        "level":3,
+        "text": "Technik trifft Unternehmergeist – Projektarbeit der Klasse 11A im Fach Informatik"},
+      {
+        "type": "paragraph",
+        "text": "Im Sommer 2025 verwandelte sich das Berufliche Gymnasium der BBS ME Hannover in eine schulische Version der Höhle der Löwen: Die Schüler*innen der 11A entwickelten in interdisziplinären Teams technisch innovative Produkte mit realem Alltagsnutzen – von der ersten Idee über den funktionalen Prototyp bis hin zur Vermarktung."
+      },
+      {
+        "type":"heading",
+        "level":2,
+        "text":"Ziel der Projektarbeit"
+      },
+      {
+        "type": "paragraph",
+        "text": "Ziel der Mini-Projektphase war es, technisches Fachwissen praxisnah anzuwenden, dabei eigenständig zu planen und die Ergebnisse überzeugend zu präsentieren – ganz im Sinne einer modernen, berufsnahen gymnasialen Bildung. Besonders betont wurde der Verbindung von Technik, Kreativität und wirtschaftlichem Denken."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "text": "Projektverlauf in drei Phasen"
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "Phase 1: Handout & Planung"
+      },
+      {
+        "type": "paragraph",
+        "text": "In der ersten Phase entwickelten die Teams ein detailliertes Konzeptpapier mit Zieldefinition, Systemarchitektur, technischen Spezifikationen und einem Gantt-Diagramm zur Zeitplanung. Begleitet wurde diese Phase von Literaturrecherche und Feedback-Loops."
+      },
+      {
+        "type": "heading",
+        "level": 3,
+        "text": "📱 L.O.S. – Life Organization Station"
+      },
+            {
+        "type": "paragraph",
+        "text": "Ein digitales Organisations-Tool mit Touchscreen, Timer, API-Anbindung und Audiofunktionen."
+      },
+      {
+        "type": "image",
+        "src": "/src/assets/los_ai.png",
+        "alt": "Ein Beispielbild",
+        "caption": "Dies ist die Bildunterschrift"
+      }
+    ]
+  }
+]

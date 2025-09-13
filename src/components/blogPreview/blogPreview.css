@@ -1,0 +1,109 @@
+
+.slide{
+    flex: 0 0 85%;
+    margin-left: 7.5% ;
+    margin-right: 7.5%;
+    margin-bottom:8px ;
+    background-color:#ffffff ;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid black;
+    box-shadow: 8px 8px black ;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+.slide h3{
+    font-size: larger;
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: black;
+}
+.preview-infos{
+    color: black;
+}
+.publish-year{
+    font-size: small;
+    margin-bottom: 16px;
+    color: black;
+}
+.preview-text{
+    line-height: 1.5;
+    font-size: 16px;
+    color:#494949;
+}
+.preview-pic{
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.author{
+    font-weight:600; 
+    padding-top: 8px;
+    margin-top: auto;
+    color:black;
+}
+
+@media only screen and (min-width:600px) and (max-width:900px) {
+    .slide{
+    flex: 0 0 70%;
+    margin-left: 15% ;
+    margin-right: 15%;
+    padding: 24px;
+}
+}
+@media only screen and (min-width:900px){
+    .slide {
+        flex: 0 0 60%;
+        margin-left:20%;
+        margin-right: 20%;
+        padding: 24px;
+       
+        
+
+    }
+    .slide a{
+        grid-template-columns: 1fr 1fr;
+         display: grid;
+         column-gap:2rem;
+         
+    }
+    .preview-pic{
+  width: 100%;
+  height: 100%;          /* Bildhöhe hängt von Breite ab */
+  max-height: 100%;      /* Bild darf nicht größer sein als die rechte Spalte */
+  object-fit: cover; 
+  max-height: 310px;
+       
+    }
+    .imgContainer{
+        display: flex;
+    }
+.preview-infos{
+        padding-left: 24px;
+        display: grid;
+        grid-template-rows: auto auto auto 1fr auto;
+        grid-auto-rows: auto;
+        align-self: normal;
+    }
+    .project-name{
+        grid-row: 1;
+    }
+    .publish-year{
+        grid-row:3;
+    }
+    .author{
+        grid-row:2;
+    }
+    .preview-text{
+        grid-row:4;
+    }
+    .preview-infos h3{
+        font-size: xx-large;
+    }
+    .tagname{
+        grid-row:5;
+    }
+
+}

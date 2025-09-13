@@ -1,0 +1,36 @@
+.projekt-banner{
+    background-image: url('../../../../assets/los_bts.jpg');
+        height: 80px;
+    display: grid;
+    align-content: center;
+    background-size:cover;
+    border-radius: 16px 16px 0 0 ;
+    background-position: 0px -120px;
+    color: white;
+    font-weight: bold;
+}
+#projekt-box{
+    padding:0;
+    
+}
+.projekt-text{
+    padding: 16px;
+    line-height: 1.2;
+    text-align: left;
+   
+}
+
+p{
+    margin-bottom: 8px;
+}
+ @media only screen and (min-width:900px){
+    #projekt-box{
+            width: 60%;
+
+    
+    }
+    .projekt-text{
+        padding: 24px;
+    }
+
+}

@@ -1,0 +1,11 @@
+.slider-wrapper{
+    width: 100%;
+    overflow:hidden;
+    position: relative;
+}
+.slider{
+    display: flex;
+    transform: translateX(-100%);
+    
+
+}

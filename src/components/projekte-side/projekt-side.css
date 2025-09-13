@@ -1,0 +1,32 @@
+.slide{
+    margin-bottom: 2rem;}
+
+.filters button{
+    padding:  4px 8px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    display:inline-block;
+}
+.filters{
+    display: flex;
+    margin-bottom: 1rem;
+    gap:8px;
+    
+    margin-left: 7.5% ;
+    margin-right: 7.5%;
+}
+@media only screen and (min-width:600px) and (max-width:900px){
+    .filters{
+        flex: 0 0 70%;
+        margin-left: 15% ;
+    margin-right: 15%;
+    }
+}
+@media only screen and (min-width:900px){
+    .filters{
+        flex: 0 0 60%;
+         margin-left:20%;
+        margin-right: 20%;
+    }
+}

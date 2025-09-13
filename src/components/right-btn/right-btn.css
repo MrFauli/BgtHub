@@ -1,0 +1,51 @@
+
+.right-btn{
+    background-color: #b2b2b2;
+    position: absolute;
+    
+    z-index: 10;
+    height: 48px;
+    width: 16px;
+    border: 16px;
+    border-radius: 4px;
+    opacity: 0.8;
+    box-sizing: border-box;
+
+  display: block;
+  flex: 0 0 auto; /* falls Parent Flexbox ist */
+    padding: 0;
+}
+
+.line{
+    position:absolute;
+    width: 2px;
+    height: 14px;
+    background-color: white;
+
+}
+.line.right-top{
+    transform: rotate(25deg);
+    margin-left: 6px;
+    top:12px;
+}
+.line.right-bottom{
+    transform: rotate(-25deg);
+      margin-left: 6px;
+}
+
+.right-btn{
+    top:50%;
+    
+    transform: translateY(-50%) translateX(-25%) ;
+    right: 0%;
+}
+@media only screen and (min-width:600px) and (max-width:900px) {
+    .right-btn{
+        right: 10%;
+    }
+}
+@media only screen and (min-width:900px){
+    .right-btn{
+        right:15%
+    }
+}
