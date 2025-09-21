@@ -1,0 +1,44 @@
+.uploadBox{
+    position: relative;
+    
+    border-style: solid;
+    border-width:1px;
+box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  border-radius: 16px;
+backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.1); /* halbtransparent, damit der Blur sichtbar ist */
+   }
+   input{
+    height: 2rem;
+    border-radius: 4px;
+    padding: 8px;
+    border: 1px solid rgb(255, 255, 255);
+}
+textarea{
+     border-radius: 4px;
+    padding: 8px;
+    border: 1px solid rgb(255, 255, 255);
+}
+label{
+    margin-top: 0.5rem;
+    font-size: large;
+}
+#blocks{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 1rem;
+}
+.createBtns{
+    display: flex;
+    margin-top: 1rem;
+    justify-content: space-between;
+}
+.contentBlock{
+    display: flex;
+    flex-direction: column;
+}

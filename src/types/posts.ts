@@ -31,3 +31,14 @@ export type postObj ={
     "content": ContentBlock[];
   
 }
+export const defaultBlogPost: postObj = {
+  id: 0 ,
+    "title": "",
+    "slug": "",
+    "date": "",
+    "grade":"" ,
+    "author": "",
+    "tag": [],
+    "summary": "",
+    "coverImage": "",
+    "content": []}

@@ -5,6 +5,7 @@ import ProjektSide from './components/projekte-side/projekte-side';
 import LandingPage from './components/landing-page/landing-page';
 import Article from './components/article/article';
 import AuthorProjects from './components/author-projects/author-projects';
+import CreateBlog from './components/createBlog/createBlog';
 import { Route,RouterProvider,createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 
 
@@ -18,6 +19,7 @@ const router = createBrowserRouter(createRoutesFromElements(
      
      <Route path="/projekte/:article" element={<Article/>}/>
      <Route path="/projekte/:article/:author" element={<AuthorProjects/>}/>
+     <Route path="/create" element={<CreateBlog/>}/>
   </Route>
 
 ));
