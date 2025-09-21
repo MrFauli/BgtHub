@@ -84,7 +84,7 @@ function BgtBox(){
             <div className="bgt-text">
                 Werde jetzt ein Teil von ihm und erlebe, was es heißt, etwas zu lernen was einem etwas bringt!
             </div>
-            <ActionBtn id="bgt-btn" color="#e48501"><a target="_blank" href="https://bbs-me.de/berufliches-gymnasium/berufliches-gymnasium">Mehr Infos!</a></ActionBtn>
+            <a target="_blank" href="https://bbs-me.de/berufliches-gymnasium/berufliches-gymnasium"><ActionBtn id="bgt-btn" color="#e48501">Mehr Infos!</ActionBtn></a>
             </Box>)
 }
 

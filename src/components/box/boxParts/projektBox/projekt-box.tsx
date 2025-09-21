@@ -12,7 +12,9 @@ function ProjektBox(){
             </div>
             <div className="projekt-text" >
                 <p  >Schau dir jetzt die spannenden Projekte an, alle von Schülerinnen des BGT's umgesetzt! Von Kurzfilmen über Spielefilme bis zu Geldautomaten ist alles dabei.</p>
-                <Link to="/projekte"><ActionBtn id="projekt-btn" color="#4df444" >Projekte ansehen</ActionBtn></Link>
+                <Link to="/projekte">
+                <ActionBtn id="projekt-btn" color="#4df444" >Projekte ansehen</ActionBtn>
+                </Link>
             </div>
         </Box>
     )
