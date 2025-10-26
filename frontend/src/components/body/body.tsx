@@ -8,7 +8,7 @@ function Body(){
 
 
     return(
-        <div>
+        <div className='layout'>
             <ScrollToTop/>
             <Header/>
             <main>

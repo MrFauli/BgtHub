@@ -12,6 +12,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+html, body {
+ 
+  margin: 0;
+}
 #root{
   width: 100%;
 }
@@ -29,8 +33,13 @@ body {
   margin: 0;
   display: flex;
   
-  width: 100%;
-  min-height: 100vh;
+  min-height: 100%;
+  height: auto;
+}
+
+
+main {
+  flex: 1; /* Füllt den verbleibenden Platz aus */
 }
 
 h1 {
@@ -61,7 +70,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+/* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -72,4 +81,21 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+:root[data-theme='light'] {
+  --text-color:#213547;
+  body{
+    color: var(--text-color);
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+  h1, h2, p, a, span, div {
+  color: var(--text-color);
 }
+}
+

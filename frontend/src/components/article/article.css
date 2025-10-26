@@ -12,6 +12,7 @@
 font-weight:600; }
 .author{
     margin-top: 0;
+    color:inherit;
 }
 #blog{
     padding: 5% 10% ;

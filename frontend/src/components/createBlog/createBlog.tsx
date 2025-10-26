@@ -5,30 +5,31 @@ import uploadIcon from '/assets/uploadIcon.png';
 import './createBlog.css';
 import type { ContentBlock } from '../../types/content';
 import CreateBlogContent, { type contentFuncs } from '../createBlogContent/createBlogContent';
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation,useParams} from "react-router-dom";
 
 interface FormErrors {
   title: string;
   year: string;
-  name: string;
-  grade:string;
   tags: string;
   summary:string;
   coverImage: string;
+  content:string;
 }
 function CreateBlog(){
+    const location = useLocation();
     const navigate = useNavigate();
+    const [user,setUser] = useState ({name:"",grade:0,alumni:false});
+    const [getUser,setGetUser] = useState(0);
     const blockRef = useRef<contentFuncs>(null);
     const [errors, setErrors] = useState<FormErrors>({
         title:"",
         year:"",
-        name:"",
-        grade:"",
         tags: "",
         summary:"",
-        coverImage:""
-
+        coverImage:"",
+        content:""
         });
+    const {article} = useParams();
     const [title,setTitle] = useState("");
     const [name,setName] = useState("");
     const [grade,setGrade] = useState("");
@@ -36,7 +37,80 @@ function CreateBlog(){
     const [year,setYear] = useState("");
     const [summary,setSummary] = useState("");
     const [cover, setCover] = useState<File|null>(null);
-    
+    const [oldBlog,setOldBlog] = useState<postObj>();
+    const [checkedBlog,setCheckedBlock] =useState<boolean>();
+    const checkAllowed = () =>{
+                 fetch("http://localhost:5000/user/data", {
+            method: "GET",
+            credentials: "include" // wichtig für Cookies
+            })
+            .then(res => res.json())
+            .then(data => {
+            if(!data){
+                setUser(prev => ({
+                ...prev,
+                name: ""
+                }));
+            }
+            else{
+                setUser(()=>({name: data.name,grade:data.grade,alumni:data.alumni}));
+            }
+                setGetUser(prev=>prev+1);
+            })
+            .catch(err => console.log(err));
+    }
+    const urlToFile = async(url: string,)=> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const filename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+    // Hier optional: MIME-Typ beibehalten
+    const file = new File([blob], filename, { type: blob.type });
+    return file;
+    }
+    useEffect(()=>{
+        checkAllowed();
+        console.log(location.pathname);
+       
+        if( article && location.pathname.includes("/edit/")){
+            fetch(`http://localhost:5000/user/article/${article}`, {
+            method: "GET",
+            credentials: "include" // wichtig für Cookies
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            if(data){
+                setOldBlog(data);
+            }
+            
+            })
+            .catch(err => console.log(err));
+            
+        }
+
+    },[]);
+    useEffect(()=>{
+        if(oldBlog){
+            console.log("YEAH");
+            setTitle(oldBlog.title);
+            setTags(oldBlog.tag);
+            setYear(oldBlog.date);
+            setSummary(oldBlog.summary);
+            urlToFile(oldBlog.coverImage).then(setCover);
+            blockRef.current?.setContent(oldBlog.content);
+        }
+    },[oldBlog])
+    useEffect(()=>{
+        if(getUser>0){
+        if(user.name.length > 0){
+            console.log(user);
+
+        }
+        else{
+            navigate("/login");
+        }
+        }
+    },[getUser])
     useEffect(()=>{
         console.log(tags);
     },tags);
@@ -54,29 +128,85 @@ function CreateBlog(){
       
     }
   }; 
-        const [posts,setPosts] = useState<postObj[]>([]);
-    useEffect(()=>{
-        fetch("http://localhost:5000/projects")
-            .then(res => res.json())
-            .then(data => setPosts(data))
-            .catch(err => console.log(err));
-    },[]);
-        const postBlog = async(blog:postObj) =>{
+  useEffect(()=>{
+    if(checkedBlog){
+    if(errors.title == "" &&  errors.tags == "" && errors.summary == "" && errors.year=="" && cover != null && blockRef.current?.getContent() != false && errors.content ==""){
+            
+            const newBlog = {...defaultBlogPost};
+            newBlog.title = title;
+            newBlog.slug = title.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").replace(/-+/g, "-"); 
+            newBlog.author = user.name;
+            newBlog.date = year;
+            newBlog.grade = user.grade;
+            newBlog.summary = summary;
+            newBlog.tag = tags;
+            newBlog.id = oldBlog ? oldBlog.id : 0;
+            newBlog.coverImage = cover != null ?cover.name : "";
+            newBlog.visible = true;
+            let fileContent = null;
+            const result  = blockRef.current?.getContent();
+            if (result && typeof result !== "boolean") {
+            const { content, files } = result;
+            newBlog.content = content;
+            fileContent = files;
+                console.log(content, files);}
+            
+            console.log(newBlog);
+            postBlog(newBlog,fileContent);
+        }
+    setCheckedBlock(false)}
+  },[checkedBlog])
+        const postBlog = async(blog:postObj,fileContent:File[] | null) =>{
+            console.log("sssssssssssssssss");
         try{
+            console.log(fileContent);
+            console.log("filesss");
+            const formData = new FormData();
+            formData.append('article',JSON.stringify(blog));
+            cover && formData.append('files',cover);
+            fileContent && fileContent.forEach((newFile) => {
+
+                if(newFile)formData.append('files', newFile);
+                console.log(newFile);
+                });
+            console.log(`File: ${cover}`);
+            fileContent && console.log(fileContent.length);
+            console.log(formData);
+            for (const [key, value] of formData.entries()) {
+                console.log(key, value);
+                }
+            if(oldBlog){
             const res = await fetch('http://localhost:5000/projects',{
-                method:"POST",
-                headers: {
-                    "Content-Type": "application/json", // wichtig für express.json()
-                },
-                body: JSON.stringify(blog)
+                method:"PUT",
+                
+                credentials: "include",
+                body:formData
             });
             const data = await res.json();
             console.log("Antwort: ",data);
+            if(!data){
+                return navigate("/login");
+            }
             navigate(`/projekte/${blog.slug}`);
+            }
+            else{
+                const res = await fetch('http://localhost:5000/projects',{
+                method:"POST",
+                
+                credentials: "include",
+                body:formData
+            });
+
+            const data = await res.json();
+            console.log("Antwort: ",data);
+            navigate(`/projekte/${blog.slug}`);
+            }
+            
+            
 
         }
-        catch{
-            console.log("Es ist ein fehler vorgefallen");
+        catch(err){
+            console.log(`Fehler: ` + err);
         }
     }
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>) =>{
@@ -84,12 +214,12 @@ function CreateBlog(){
         setErrors({
         title:"",
         year:"",
-        name:"",
-        grade:"",
         tags: "",
         summary:"",
-        coverImage: ""
-        })
+        coverImage: "",
+        content:""
+        });
+        checkAllowed();
         console.log(title);
         if(title.length == 0){
             setErrors((prev) => ({
@@ -98,23 +228,24 @@ function CreateBlog(){
             }))
         }
         if(year.length == 0){
+            console.log("yearrrrrrrrrrrrrrrr");
             setErrors((prev) => ({
                 ...prev,
                  year: "Schuljahr des Projektes angeben."
             }))
         }
-        if(name.length == 0){
-            setErrors((prev) => ({
-                ...prev,
-                 name: "Dein Name fehlt."
-            }))
-        }
-        if(grade.length == 0){
-            setErrors((prev) => ({
-                ...prev,
-                 grade: "Die Jahrgangsstufe während des Projektes."
-            }))
-        }
+        // if(name.length == 0){
+        //     setErrors((prev) => ({
+        //         ...prev,
+        //          name: "Dein Name fehlt."
+        //     }))
+        // }
+        // if(grade.length == 0){
+        //     setErrors((prev) => ({
+        //         ...prev,
+        //          grade: "Die Jahrgangsstufe während des Projektes."
+        //     }))
+        // }
         if(tags.length == 0){
             setErrors((prev) => ({
                 ...prev,
@@ -140,30 +271,40 @@ function CreateBlog(){
             }))
            
         }
-        blockRef.current?.getContent();
-        console.log()
-        if(errors.title == "" && errors.name == "" && errors.grade == "" && errors.tags == "" && errors.summary == "" && cover != null && blockRef.current?.getContent() != false){
+        const content =  blockRef.current?.getContent();+
+        console.log("Hello");
+        console.log(content);
+        console.log(typeof(content));
+        content && (typeof(content) !== "boolean") && console.log(content.content.length);
+        if (content && typeof(content) !== "boolean" && content.content.length == 0) {
+            console.log("yeag");
+            setErrors((prev) => ({
+                ...prev,
+                 content: "Erstelle Inhalt."
+            }))
+        }                                 
+        setCheckedBlock(true);
+    }
+    const deleteArticle = () =>{
+        console.log("Löschen");
+        if(oldBlog){
+        fetch(`http://localhost:5000/projects/${oldBlog.id}`, {
+            method: "DELETE",
+            credentials: "include" // wichtig für Cookies
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                navigate("/dashboard");
+            })
+            .catch(err => console.log(err));
             
-            const newBlog = {...defaultBlogPost};
-            newBlog.title = title;
-            newBlog.slug = title.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").replace(/-+/g, "-"); 
-            newBlog.author = name;
-            newBlog.date = year;
-            newBlog.grade = grade;
-            newBlog.summary = summary;
-            newBlog.tag = tags;
-            newBlog.id = posts.length +1;
-            newBlog.coverImage = cover != null ?cover.name : "";
-            newBlog.content = blockRef.current?.getContent() as ContentBlock[];
-            console.log(newBlog);
-            postBlog(newBlog);
         }
     }
-
     return(
         <div id="createBlog">
             <form onSubmit={handleSubmit}>
-            <h1>Veröffentliche dein Projekt</h1>
+            <h1>{oldBlog ? "Bearbeite ":"Veröffentliche "  }dein Projekt</h1>
             
             <label htmlFor='title' >Name deines Projektes</label>
             <input style={{borderColor: errors.title.length > 0 ?  "red" : ""}} type="text" name="title" id="title" placeholder="Mein Projekt" value={title} onChange={(e)=>setTitle(e.target.value)}/>
@@ -171,14 +312,14 @@ function CreateBlog(){
             <label htmlFor='year'>Schuljahr des Projektes</label>
             <input style={{borderColor: errors.year.length > 0 ?  "red" : ""}} name="year" id="year" type="text" title="year" placeholder="2025/26" value={year} onChange={(e)=>setYear(e.target.value)}></input>
             {<span className="error">{errors.year}</span>}
-            <label htmlFor="name">Dein Name</label>
+            {/* <label htmlFor="name">Dein Name</label>
             <input style={{borderColor: errors.name.length > 0 ?  "red" : ""}} type="text" name="name" id="name" placeholder="Dein Name" value={name} onChange={(e)=>setName(e.target.value)}></input>
             {<span className="error">{errors.name}</span>}
             <label htmlFor="grade">Dein Jahrgang</label>
             <input style={{borderColor: errors.grade.length > 0 ?  "red" : ""}} type="number" name="grade" id="grade" placeholder="Dein Jahrgang" value={grade} onChange={(e)=>setGrade(e.target.value)}></input>
-            {<span className="error">{errors.grade}</span>}
+            {<span className="error">{errors.grade}</span>} */}
             <label htmlFor="select">Tags</label>
-            <div style={{color: errors.tags.length > 0 ?  "red" : ""}} id="select">
+            <div style={{color: errors.tags.length > 0 ?  "red" : "inherit"}} id="select">
                 <span style={{backgroundColor:"#e32185" }} className={`option ${tags.includes("Technik") ? "selected" : ""}`} onClick={handleSelectTags}>Technik</span>
                 <span style={{backgroundColor:"#e48501" }} className={`option ${tags.includes("Informatik") ? "selected" : ""}`} onClick={handleSelectTags}>Informatik</span>
                 <span style={{backgroundColor:"#4df444" }}className={`option ${tags.includes("Medien") ? "selected" : ""}`} onClick={handleSelectTags}>Medien</span>
@@ -196,10 +337,14 @@ function CreateBlog(){
 
            </textarea>
             {<span className="error">{summary.length > 120 ? "Maximal 120 Zeichen." : errors.summary}</span>}
-            <label>Content vom Artikel
+            <label>Content vom Artikel: <br /> {title}
             <CreateBlogContent ref={blockRef}/>
             </label>
-            <button id="upload" type="submit">Veröffentlichen</button>
+            {<span className="error">{errors.content}</span>}
+            <div id="submitBtns">
+                {oldBlog? <button  type="button" id="delete" onClick={deleteArticle}>Löschen</button>:""}
+                <button id="upload" type="submit">{oldBlog? "Updaten" : "Veröffentlichen"}</button>
+            </div>
             </form>
         </div>
     );

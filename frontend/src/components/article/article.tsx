@@ -1,26 +1,54 @@
 import {useEffect,useState} from "react";
 import type {postObj} from '../../types/posts';
 import type {ContentBlock} from '../../types/content';
-import { Link,useParams } from "react-router-dom";
+import { Link,useParams,useNavigate } from "react-router-dom";
 
 import Tag from "../tag/tag";
 import './article.css';
+import BackBtn from "../backBtn/backBtn";
 
 function Article(){
+     const navigate = useNavigate();
     const [posts,setPosts] = useState<postObj[]>([]);
+    const [post,setPost] = useState<postObj>();
     useEffect(()=>{
         fetch("http://localhost:5000/projects")
             .then(res => res.json())
-            .then(data => setPosts(data))
+            .then(data => {
+                console.log("data");
+                console.log(data);
+                if(!data){
+
+                    navigate("/"); // z. B. deine Standardseite
+                    
+                }
+                setPosts(data)})
             .catch(err => console.log(err));
     },[]);
     const {article} = useParams();
-    const post = posts.find(p => p.slug == article);
-    console.log(post?.content)
+    const goBack = () =>{
+        console.log(window.history.length);
+        if(window.history.length < 3){
+            navigate("/projekte");
+        }
+        else{
+            navigate(-1);
+        }
+    }
+
+
+    
     useEffect(() => {
     window.scrollTo(0, 0);
+ 
     }, []);
-    console.log(post);
+    useEffect(()=>{
+                
+                setPost( posts.find(p => p.slug == article))
+        if(posts.length > 0 && (posts.find(p => p.slug == article) == undefined)){
+          
+            navigate("/"); 
+              } },[posts])
     const createContent = (content:ContentBlock) =>{
         switch(content.type){
             case "image":
@@ -46,7 +74,10 @@ function Article(){
         }
     }
     return(
-        <div id="blog">
+        <>
+         {posts.length>0 ?
+        <div id="blog" style={{position:'relative', paddingTop:'40px'}}>
+                     <BackBtn onClick={goBack}/>
         <section className="about" >
             <img className="cover" src={post?.coverImage}/>
 
@@ -63,11 +94,11 @@ function Article(){
         </section>
         <section className="content">
             {post?.content.map((content) => createContent(content))}
-        </section>
+        </section> 
 
 
-    </div>
-
+    </div> : ""}
+        </>
     )
 }
 export default Article;

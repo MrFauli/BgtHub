@@ -12,10 +12,24 @@ h1{
     border: 0px;
 
 }
+#submitBtns{
+    align-self: flex-end;
+    
+}
+#delete{
+    background-color:red;
+    
+    width: max-content;
+    margin-top:1rem;
+    margin-right: 1rem;
+}
 #upload{
     align-self: flex-end;
     width: max-content;
     margin-top:1rem;
+}
+.option{
+    color:inherit
 }
 input{
     height: 2rem;

@@ -4,13 +4,26 @@ import type { ContentBlock } from '../../types/content';
 import './createBlogContent.css';
 import type { postObj } from '../../types/posts';
 export type contentFuncs ={
-    getContent: () => ContentBlock[] | boolean;
+    getContent: () => {content: ContentBlock[],files:File[]} | boolean;
+    setContent: (content:ContentBlock[]) => void;
+}
+interface FileEntry {
+  index: number;
+  file: File;
 }
 function CreateBlogContent(props:{},ref: React.Ref<contentFuncs>){
-    console.log(props);
-    const [blocks, setBlocks] = useState<ContentBlock[]>([]);
-    const [error,setError] = useState<string[]>([]);
 
+    const [blocks, setBlocks] = useState<ContentBlock[]>([]);
+    const [files,setFiles] =  useState<FileEntry[]>([]);
+    const [error,setError] = useState<string[]>([]);
+    const urlToFile = async(url: string)=> {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const filename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
+    // Hier optional: MIME-Typ beibehalten
+    const file = new File([blob], filename, { type: blob.type });
+    return file;
+    }
     const addBlock = (block:ContentBlock["type"]) =>{
         let newBlock:ContentBlock;
         switch(block){
@@ -37,10 +50,20 @@ function CreateBlogContent(props:{},ref: React.Ref<contentFuncs>){
         setBlocks([...blocks,newBlock]);
     } 
 
-    const updateBlock = (index: number, updated: ContentBlock) => {
+    const updateBlock = (index: number, updated: ContentBlock,file?: File) => {
     const newBlocks = [...blocks];
     newBlocks[index] = updated;
     setBlocks(newBlocks);
+    if(newBlocks[index].type == "image" && file){
+        if(files.some(file => file.index == index)){
+            files.map(fileOld => fileOld.index == index ? file : fileOld );
+        }
+        else{
+            setFiles(prev => [...prev,{index,file}]);
+        }
+        console.log("Files geupdatet");
+        console.log(files);
+    }
     };
     useImperativeHandle(ref,()=>({
         getContent:()=>{
@@ -69,15 +92,29 @@ function CreateBlogContent(props:{},ref: React.Ref<contentFuncs>){
                 }
                 setError((e)=>[...e,errorMessage]);
                 existError = errorMessage != "" ? true : existError;
+
             })
             console.log(error);
             console.log(existError);
+            const imgFiles = files.map((old)=>old.file);
             if(!existError){
-                return blocks;
+                return {content: blocks,
+                    files:imgFiles
+                };
             }
             else{
                 return false;
             }
+        },
+        setContent:(content)=>{
+            setBlocks(content);
+            console.log(content);
+            content.map((block,index)=>{
+                if(block.type == "image"){
+                    urlToFile(block.src).then((file)=>setFiles(prev => [...prev,{index,file}]))
+                    
+                }
+            })
         }
 
     }))
@@ -85,7 +122,8 @@ function CreateBlogContent(props:{},ref: React.Ref<contentFuncs>){
     return(
         <div>
             <div id="blocks">
-                {blocks.map((block:ContentBlock,i)=>{
+                {
+                blocks.map((block:ContentBlock,i)=>{
                     switch(block.type){
 
                         case "paragraph":
@@ -98,12 +136,13 @@ function CreateBlogContent(props:{},ref: React.Ref<contentFuncs>){
                                 </div>
                             )
                         case "image":
+                            
                             return(
                                 <div className="contentBlock">
                                 <label style={{borderColor: error[i] ? error[i].length > 0 ?  "red" : "" : ""}} className="uploadBox" htmlFor={"image" +i}>
-                                <input type="file" id={"image"+i} name={"image" +i} accept='image/*'onChange={(e)=>updateBlock(i,{...block,src:e.target.value})}  hidden/>
+                                <input type="file" id={"image"+i} name={"image" +i} accept='image/*'onChange={ (e)=> e.target.files && updateBlock(i,{...block,src:e.target.value},e.target.files[0])}  hidden/>
                                 <img style={{color:"green"}}src={uploadIcon} id="uploadIcon"/>
-                                <div id="uploadText">Bild hochladen</div> 
+                                <div id="uploadText">{files.find(file => file.index == i) == null ? "Bild hochladen" : "Zum ändern, neues Bild hochladen"}</div> 
                                 <div id="previewBox"></div>
                                 </label>
                                  {<span className="error">{error[i]}</span>}

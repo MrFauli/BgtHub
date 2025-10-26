@@ -18,7 +18,7 @@
     margin-bottom: 8px;
 }
 .color-mode{
-    background-color: transparent;
+    background-color: #b4b4b4;
     border: 1px solid #ececec;
 
     border-radius: 8px;
@@ -31,7 +31,14 @@
 .mode-icon{
     margin: auto auto;
     height: 60%;
-
+    
     width:60%;
 
+}
+.top-footer a{
+   
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  font-weight:bold ;
 }

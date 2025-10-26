@@ -29,8 +29,9 @@ export type postObj ={
     "summary": string;
     "coverImage": string;
     "content": ContentBlock[];
-  
+    "visible":boolean;
 }
+
 export const defaultBlogPost: postObj = {
     "id": 0 ,
     "title": "",
@@ -41,4 +42,5 @@ export const defaultBlogPost: postObj = {
     "tag": [],
     "summary": "",
     "coverImage": "",
-    "content": []}
+    "content": [],
+    "visible":true}

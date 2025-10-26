@@ -1,0 +1,74 @@
+.articleBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+width: 100%;
+
+  margin-bottom: 0.5rem;
+  background-color: white;;
+  color:black;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+gap: 0.5rem;
+  box-sizing: border-box;
+}
+#dashboard{
+     display: flex;
+     flex-direction: column;
+    width:80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#dashboard h1{
+    margin-top: 0rem;
+}
+.articleBox h3 {
+  flex: 1; 
+  margin: 0;
+ text-align: start;
+  word-wrap: break-word; 
+  line-height: 1.3;
+}
+
+.articleBox button {
+  background: none;
+  border: none;
+  padding: 0.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dashboard .icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain; 
+}
+.articleBox button{
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid black;
+}
+#logout{
+    align-self: flex-start;
+    flex: 0 0 auto; width: auto;
+}
+.articleBox a{
+    flex: 0 0 auto;  
+    justify-self: align-end;
+    color:black;
+}
+@media only screen and (min-width:600px) and (max-width:900px) {
+    #dashboard{
+    width: 70%;
+    
+}
+}
+@media only screen and (min-width:900px){
+    #dashboard {
+        width: 60%;
+
+        
+
+    }}

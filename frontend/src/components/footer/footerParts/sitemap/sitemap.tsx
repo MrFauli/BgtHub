@@ -7,8 +7,9 @@ function Sitemap(){
         <div className="sitemap">
             <h3>Infos</h3>
             <ul>
-                <li>Kontakt</li>
-                <li>BBS-ME</li>
+                <li> <a  href="mailto:gianlucarossi666@yahoo.com">Kontakt</a></li>
+                <li><a target="_blank" href="https://bbs-me.de">BBS-ME</a></li>
+                <li><a target="_blank" href='https://bbs-me.de/impressum'>Impressum</a></li>
             </ul>
         </div>
     )

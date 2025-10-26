@@ -7,6 +7,9 @@ import Article from './components/article/article';
 import AuthorProjects from './components/author-projects/author-projects';
 import CreateBlog from './components/createBlog/createBlog';
 import { Route,RouterProvider,createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import LoginSide from './components/login/login';
+import RegisterSide from './components/register/register';
+import Dashboard from './components/dashboard/dashboard';
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -19,7 +22,11 @@ const router = createBrowserRouter(createRoutesFromElements(
      
      <Route path="/projekte/:article" element={<Article/>}/>
      <Route path="/projekte/:article/:author" element={<AuthorProjects/>}/>
-     <Route path="/create" element={<CreateBlog/>}/>
+     <Route path="/login" element={<LoginSide/>}/>
+     <Route path="/register" element={<RegisterSide/>}/>
+     <Route path="/dashboard/create" element={<CreateBlog/>}/>
+     <Route path="/dashboard/edit/:article" element={<CreateBlog/>}/>
+     <Route path="/dashboard" element={<Dashboard/>}/>
   </Route>
 
 ));

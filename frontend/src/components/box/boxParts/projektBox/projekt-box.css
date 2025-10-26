@@ -1,11 +1,11 @@
 .projekt-banner{
-    background-image: url('../../../../assets/los_bts.jpg');
+    background-image: url('../../../../assets/projekt-wallpaper.jpg');
+    background-repeat: no-repeat;
         height: 80px;
-    display: grid;
     align-content: center;
     background-size:cover;
     border-radius: 16px 16px 0 0 ;
-    background-position: 0px -120px;
+    background-position: 0px 50%;
     color: white;
     font-weight: bold;
 }

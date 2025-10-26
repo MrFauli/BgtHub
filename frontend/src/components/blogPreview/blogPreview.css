@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     text-align: left;
+    
 }
 .slide h3{
     font-size: larger;
@@ -33,8 +34,8 @@
     color:#494949;
 }
 .preview-pic{
-    width: 100%;
-    height: 160px;
+    width: 100%; 
+    max-height: 180px;
     object-fit: cover;
     border-radius: 8px;
 }
@@ -74,11 +75,12 @@
   height: 100%;          /* Bildhöhe hängt von Breite ab */
   max-height: 100%;      /* Bild darf nicht größer sein als die rechte Spalte */
   object-fit: cover; 
-  max-height: 310px;
+
        
     }
     .imgContainer{
         display: flex;
+        height: 280px;
     }
 .preview-infos{
         padding-left: 24px;

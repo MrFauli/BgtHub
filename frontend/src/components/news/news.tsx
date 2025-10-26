@@ -7,7 +7,7 @@ import type {postObj} from '../../types/posts';
 import './news.css';
 
 function News(){
-    const [postsNum,setPostsNum] = useState(4);
+    const [postsNum,setPostsNum] = useState(3);
     const [touchStart,setTouchStart] = useState(0);
     const [touchEnd,setTouchEnd] = useState(0);
     const [slide,setSlide] = useState(1);
@@ -18,19 +18,28 @@ function News(){
     useEffect(()=>{
         if(posts.length != 0){
             setPostsNum(posts.length);
-
+            console.log(postsNum);
         }
+    
+        
     },[posts]);
+    useEffect(()=>{
+        console.log(`num: `+postsNum);
+        console.log(posts);
+        
+    },[postsNum]);   
 
     useEffect(()=>{
         fetch("http://localhost:5000/projects")
             .then(res => res.json())
-            .then(data => setPosts(data))
+            .then(data => {
+                setPosts(()=>data.filter((article:postObj) => article.visible == true));
+            })
             .catch(err => console.log(err));
         
         
     },[]);
-
+    
 
     useEffect(()=>{
    
@@ -94,11 +103,12 @@ function News(){
             <div className="slider-wrapper" onTouchStart={(e)=>setTouchStart(e.touches[0].clientX)} onTouchEnd={handleSwipe} >
                 {posts.length == 0 ? <div></div> : 
                 <div className="slider" style={{transform: `translate(-${translateValue}%)`, transition: transitionSlide ? `transform 0.3s ease` : ``}} onTransitionEnd={infiniteSwipe} >
-                     :<BlogPreview post={posts[postsNum-3] as postObj}/>
+                    <BlogPreview post={posts[postsNum-3] as postObj}/>
                     <BlogPreview post={posts[postsNum-1] as postObj}/>
                     <BlogPreview post={posts[postsNum-2] as postObj}/>
                     <BlogPreview post={posts[postsNum-3] as postObj}/>
                     <BlogPreview post={posts[postsNum-1] as postObj}/>
+                    
                 </div>}
                 <LeftBtn onclick={swipeLeft}/>
                 <RightBtn onclick={swipeRight}/>

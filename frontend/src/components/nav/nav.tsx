@@ -14,14 +14,16 @@ function Nav(){
             <ul className="nav-bar" >
                 <li><NavLink to="/">Home</NavLink></li>
                 <li> <NavLink to="/projekte">Projekte</NavLink></li>
-                <li><a target="_blank" href="https://bbs-me.de/berufliches-gymnasium/berufliches-gymnasium">BGT</a></li>    
+                <li><a target="_blank" href="https://bbs-me.de/berufliches-gymnasium/berufliches-gymnasium">BGT</a></li> 
+                <li><NavLink to="/dashboard">Dashboard</NavLink></li>   
                 
             </ul>
             <nav className={nav ? "nav-open" : ""} >
                 <ul>
                     <li onClick={() => setNav(false)}><NavLink to="/">Home</NavLink></li>
                     <li onClick={() => setNav(false)}> <NavLink to="/projekte">Projekte</NavLink></li>
-                    <li><a target="_blank" href="https://bbs-me.de/berufliches-gymnasium/berufliches-gymnasium">BGT</a></li>    
+                    <li><a target="_blank" href="https://bbs-me.de/berufliches-gymnasium/berufliches-gymnasium">BGT</a></li>
+                    <li onClick={() => setNav(false)}><NavLink to="/dashboard">Dashboard</NavLink></li>    
                 </ul>
             </nav>
         </div>);

@@ -10,3 +10,8 @@
     margin-top: 24px;
     margin-bottom: 16px;
 }
+.sitemap a{
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
