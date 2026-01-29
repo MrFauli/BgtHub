@@ -1,0 +1,21 @@
+#datenschutz{
+     display: flex;
+     flex-direction: column;
+    width:80%;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media only screen and (min-width:600px) and (max-width:900px) {
+    #datenschutz{
+    width: 70%;
+    
+}
+}
+@media only screen and (min-width:900px){
+    #datenschutz {
+        width: 60%;
+
+        
+
+    }}

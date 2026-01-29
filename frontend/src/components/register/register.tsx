@@ -4,6 +4,7 @@ import { useState,useRef,useEffect } from 'react';
 
 import { Link,useNavigate } from 'react-router-dom';
 interface FormErrors {
+  status:string;
   email: string;
   name: string;
   grade: string;
@@ -17,7 +18,9 @@ function RegisterSide(){
     const [email,setEmail]  = useState<string>("");
     const [code,setCode] = useState();
     const [userCode, setUserCode] = useState<string[]>(Array(6).fill(""));
+    
     const [registerError,setRegisterError] = useState<FormErrors>({
+        status:"",
         email: "",
         name:"",
         grade:"",
@@ -25,11 +28,12 @@ function RegisterSide(){
     });
     const [codeError,setCodeError] = useState<string>("");
     const [trys,setTrys] = useState<number>(3);
+    const [status,setStatus] = useState<string>("Schüler");
     const [name,setName] = useState("");
     const [grade,setGrade] = useState<number>(11);
     const [password,setPassword] = useState<string>("");
     const isValidEmail = (email:string)=>{
-        const regex = /^[a-zA-Z0-9._%+-]+@bbs-me\.org$/;
+        const regex = status == "Lehrer" ? /^[a-zA-Z0-9._%+-]+@bbs-me\.de$/ :status=="Alumni" ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ :  /^[a-zA-Z0-9._%+-]+@bbs-me\.org$/;
         return regex.test(email);
 }
     const [existEmail, setExistEmail] = useState();
@@ -37,16 +41,22 @@ function RegisterSide(){
     const checkRegister = (e:React.FormEvent<HTMLFormElement>) =>{
             e.preventDefault();
         setRegisterError({
+        status:"",
         email:"",
         password:"",
         grade:"",
         name:""});
-
-        if(!isNameMatchingEmail(name,email)){
+        if(status==""){
+          setRegisterError((prev)=>({
+                ...prev,
+                status:`Bitte Auswählen ob Schüler, Lehrer oder Alumni.`
+            }));
+        }
+        if(!isNameMatchingEmail(name,email) && status == "Schüler"){
               setRegisterError((prev)=>({
                 ...prev,
                 name:`Bitte echten Namen aus der Email verwenden.\n
-                        Ausnahmen? Email an info@bgt-hub.me!`
+                        Fehler/Ausnahmen? Email an info@bgt-hub.me!`
             }));}
             if(grade != 11 && grade != 12 && grade != 13){
                  setRegisterError((prev)=>({
@@ -57,17 +67,17 @@ function RegisterSide(){
         if(!isValidEmail(email)){
             setRegisterError((prev)=>({
                 ...prev,
-                email:"Email ist keine gültige Schulemail."
+                email:status=="Schüler" ?"Email ist keine gültige Schulemail." : status=="Lehrer" ? "Email ist keine gültige Lehreremail." : "Email ist keine gültige Emailaddresse."
             }));}
           else{
             console.log("fetch überprüfen");
             console.log(existEmail)
-           
+            
             fetch(`http://localhost:5000/user/email/${email}`)
             .then(res => res.json())
             .then(data => {
               console.log("DATA:", data);
-              setExistEmail(data); // kein Arrow Function nötig
+              setExistEmail(data.status); // kein Arrow Function nötig
               setEmailTrigger((prev)=>prev+1);
             })
             .catch(err => console.error("FEHLER:", err));
@@ -86,38 +96,73 @@ function RegisterSide(){
     
     useEffect(()=>{
       console.log(`Email überprüft: ${existEmail}`)
-        if(existEmail && email.length >0){
+      
+           if(existEmail && email.length >0 && existEmail == "Alumni" && status == "Alumni" && registerError.name == "" && registerError.email =="" && registerError.grade == "" && registerError.password == ""){
+setStep("code");
+            fetch(`http://localhost:5000/user/authcode/${email}`)
+            .then(res => res.json())
+            .then(data => {setCode(data), console.log(data)})
+            .catch(err => console.log(err));
+        }
+        else if(existEmail && email.length >0 && existEmail != "Alumni"){
             setRegisterError((prev)=>({
                 ...prev,
                 email:"Email hat schon ein Konto"}));
         }
-        else if(!existEmail && email.length > 0 && registerError.name == "" && registerError.email =="" && registerError.grade == "" && registerError.password == ""){
+   
+
+     
+        else if(!existEmail && email.length > 0 && registerError.name == "" && registerError.email =="" && registerError.grade == "" && registerError.password == "" && status != "Alumni"){
         setStep("code");
             fetch(`http://localhost:5000/user/authcode/${email}`)
             .then(res => res.json())
-            .then(data => setCode(data))
+            .then(data => {setCode(data), console.log(data)})
             .catch(err => console.log(err));
   
             }
+        else if(!existEmail && email.length > 0 && status=="Alumni"){
+          setRegisterError((prev)=>({
+                ...prev,
+                email:"Bitte an info@bgt-hub.me E-Mail schreiben, damit wir bestätigen können dass du ein ehemaliger Schüler bist."}));
+        }
     },[emailTrigger]);
     const checkCode = async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault();
         const finalCode = userCode.join("");
         if(finalCode.length === 6){
-            console.log(finalCode);
-            if(finalCode == code){
+  
+            if(finalCode == code && status!="Alumni"){
                 fetch('http://localhost:5000/user/register',{
                 method:"POST",
                 headers: {
                     "Content-Type": "application/json", // sagt dem Server: das ist JSON!
                 },
                 body:JSON.stringify({
+                  status:status,
                     name:name,
                     email: email,
                     grade: grade,
                     password: password
                 })
-               
+            })
+             .then(res => res.json())
+                .then(data => console.log(data))
+                .catch(err => console.log(err));
+                navigate("/login");
+            }
+            else if(finalCode == code && status=="Alumni") {
+              fetch('http://localhost:5000/user/register',{
+                method:"PUT",
+                headers: {
+                    "Content-Type": "application/json", // sagt dem Server: das ist JSON!
+                },
+                body:JSON.stringify({
+                  status:status,
+                    name:name,
+                    email: email,
+                    password: password,
+                    admin_rechte: false
+                })
             })
              .then(res => res.json())
                 .then(data => console.log(data))
@@ -163,7 +208,7 @@ function RegisterSide(){
 }
 
 const extractEmailParts = (email: string)=> {
-  const match = email.match(/^([a-z]+)([a-z]*)\.([a-z]+)@bbs-me\.org$/i);
+  const match = email.match(/^([a-z]+)([a-z]*)\.([a-z]+)@.+\..+$/i);
   if (!match) return null;
   const [, first, maybeSecond, last] = match;
   return { first: first + maybeSecond, last };
@@ -235,15 +280,22 @@ const  validatePassword =(password: string)=> {
                 {step == "email" ? 'Registrieren' : 'Code eingeben'}
             </h1>
             {step == "email" ?  <form onSubmit={checkRegister}>
+                <label  htmlFor='status' className="statusLabel">Status: {status}</label>
+                <div className="statusBox">
+                  <button type="button" className={status == "Schüler" ? "selectedStatus" : ""} onClick={()=>setStatus("Schüler")}><img className="statusIcon" src='../../public/assets/student.png'/></button>
+                  <button type="button" className={status == "Lehrer" ? "selectedStatus" : ""} onClick={()=>setStatus("Lehrer")}><img className="statusIcon" style={{paddingTop:"4px"}} src='../../public/assets/teacher.png'/></button>
+                  <button type="button" className={status == "Alumni" ? "selectedStatus" : ""} onClick={()=>setStatus("Alumni")}><img className="statusIcon" src='../../public/assets/alumni.png'/></button>
+                </div>
+                {<span>{registerError.status}</span>}
                 <label htmlFor='mail' className='mailLabel' >Email</label>
-                <input value={email} onChange={(e)=>setEmail(e.target.value)} name='mail' type='email'placeholder="your.name@bbs-me.org" />
+                <input value={email} onChange={(e)=>setEmail(e.target.value)} name='mail' type='email'placeholder={status == "Schüler" ? "your.name@bbs-me.org" : status== "Lehrer"? "your.name@bbs-me.de" : "your.name@email.de"} />
                 {<span>{registerError.email}</span>}
                 <label htmlFor='name' className='nameLabel' >Vor- und Nachname</label>
                 <input value={name} onChange={(e)=>setName(e.target.value)} name='name' type='text'placeholder="Albert Einstein" />
                 {<span>{registerError.name}</span>}
-                <label htmlFor='grade' className='gradeLabel' >Jahrgang</label>
-                <input value={grade} onChange={(e)=>setGrade(Number(e.target.value))} name='grade' type='number'placeholder="12" />
-                {<span>{registerError.grade}</span>}
+                {status == "Schüler" ? <><label htmlFor='grade' className='gradeLabel' >Jahrgang</label>
+                <input value={grade} onChange={(e)=>setGrade(Number(e.target.value))} name='grade' type='number'placeholder="12" /> 
+                {<span>{registerError.grade}</span>} </>: <></>}
                 <label htmlFor='password' className='passwordLabel' >Passwort</label>
                 <input value={password} onChange={(e)=>setPassword(e.target.value)} name='name' type='password'placeholder="••••••••" />
                 {<span>{registerError.password}</span>}

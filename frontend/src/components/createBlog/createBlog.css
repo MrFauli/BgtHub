@@ -37,14 +37,16 @@ input{
     padding: 8px;
     border: 1px solid rgb(255, 255, 255);
 }
-textarea{
+#summary{
      border-radius: 4px;
     padding: 8px;
     border: 1px solid rgb(255, 255, 255);
+    resize: none;
 }
 label{
     margin-top: 0.5rem;
     font-size: large;
+
 }
 #select{
  padding: 0.5rem 1rem;

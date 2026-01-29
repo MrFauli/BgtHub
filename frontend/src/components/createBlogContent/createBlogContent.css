@@ -10,6 +10,8 @@ box-sizing: border-box;
   padding: 24px;
   border-radius: 16px;
 backdrop-filter: blur(10px);
+    flex-basis:0;
+    flex-grow: 1;
   background-color: rgba(255, 255, 255, 0.1); /* halbtransparent, damit der Blur sichtbar ist */
    }
    input{
@@ -18,11 +20,16 @@ backdrop-filter: blur(10px);
     padding: 8px;
     border: 1px solid rgb(255, 255, 255);
 }
-textarea{
+.contentBlock textarea{
      border-radius: 4px;
     padding: 8px;
     border: 1px solid rgb(255, 255, 255);
+    flex-basis:0;
+    flex-grow: 1;
+    resize: both;
 }
+
+
 label{
     margin-top: 0.5rem;
     font-size: large;
@@ -41,4 +48,29 @@ label{
 .contentBlock{
     display: flex;
     flex-direction: column;
+}
+.contentRow{
+    display: flex;
+    gap:8px;
+    align-items: center;
+    min-width: 100%;
+    }
+.contentBlock .icon {
+    margin: 0;
+      object-fit: contain; 
+max-width: 80%; 
+    max-height: 80%;
+
+}
+.delete{
+    margin: 0;
+    box-sizing: border-box;
+    background-color: red;
+    padding: 4px 0;
+    max-height: 3rem;
+    max-width: 3rem;
+    display: flex;
+
+justify-content: center;
+    align-items: center;
 }

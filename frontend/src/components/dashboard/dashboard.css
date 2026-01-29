@@ -16,6 +16,7 @@ gap: 0.5rem;
      display: flex;
      flex-direction: column;
     width:80%;
+    
     margin-left: auto;
     margin-right: auto;
 }
@@ -52,7 +53,17 @@ gap: 0.5rem;
 }
 #logout{
     align-self: flex-start;
+    justify-self: start;
     flex: 0 0 auto; width: auto;
+}
+#admin{
+    align-self: flex-end;
+    justify-self: flex-end;
+    flex: 0 0 auto; width: auto;
+}
+#btns{
+  display: flex;
+  justify-content: space-between;
 }
 .articleBox a{
     flex: 0 0 auto;  

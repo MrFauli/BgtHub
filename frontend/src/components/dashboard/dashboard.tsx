@@ -6,6 +6,7 @@ import ActionBtn from "../actionbtn/actionbtn";
 function Dashboard(){
     const navigate = useNavigate();
     const [user,setUser] =useState<postObj[]>([]);
+    const [admin,setAdmin] = useState();
     const [logedIn,setLogedIn] = useState<boolean>();
     const [getUser,setGetUser] = useState<number>(0);
     useEffect(()=>{
@@ -21,7 +22,9 @@ function Dashboard(){
             else{
                {setLogedIn(data.accept); 
                 setUser(data.result);
-                
+                setAdmin(data.admin_rechte);
+                console.log("admin:"+data.admin_rechte)
+                console.log(data)
                }
             }
                 setGetUser(prev=>prev+1);
@@ -33,6 +36,7 @@ function Dashboard(){
     },[])
     useEffect(()=>{
         console.log(getUser);
+        console.log("admin"+admin)
         if(getUser>0){
             console.log(user);
         if(logedIn){
@@ -49,7 +53,7 @@ function Dashboard(){
                 method:"POST",
                 credentials: "include", // wichtig für Cookies
                 headers: {
-                    "Content-Type": "application/json", // sagt dem Server: das ist JSON!
+                    "Content-Type": "application/json", 
                 },
                 body:JSON.stringify({
                     id: id
@@ -62,7 +66,7 @@ function Dashboard(){
             else{
                {setLogedIn(data.accept); 
                 setUser(data.result);
-                
+
                }
             }
                 setGetUser(prev=>prev+1);
@@ -84,8 +88,11 @@ function Dashboard(){
           <>
           {logedIn &&
             <div id="dashboard">
-                
-            <ActionBtn onClick={logout} id="logout" color="red"><img className="icon" src="/assets/logout.png"/></ActionBtn>
+                <div id="btns">
+            <ActionBtn onClick={logout} id="logout" color="red"><img className="icon" src="/assets/logout.png"/></ActionBtn>   
+            {admin &&<ActionBtn onClick={()=>navigate("/admin")} id="admin" color="green"><img className="icon" src="/assets/admin.png"/></ActionBtn>}
+         </div> 
+
         <h1>Deine Projekte</h1>
         
         {user  && user.map((article)=>(

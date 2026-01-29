@@ -1,0 +1,108 @@
+#adminPortal{
+     display: flex;
+     flex-direction: column;
+    width:80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#adminPortal h1{
+    margin-top: 0rem;
+}
+.articleBox h3 {
+  flex: 1; 
+  margin: 0;
+ text-align: start;
+  word-wrap: break-word; 
+  line-height: 1.3;
+}
+#adminPortal h2{
+    margin: 0;
+    margin-left: 4px;
+    margin-bottom: 4px;
+    text-align: left
+} 
+.articleBox button {
+  background: none;
+  border: none;
+  padding: 0.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#adminPortal .icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain; 
+}
+.articleBox button{
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid black;
+}
+#logout{
+    align-self: flex-start;
+    justify-self: start;
+    flex: 0 0 auto; width: auto;
+}
+#dashboard-btn{
+    align-self: flex-end;
+    justify-self: flex-end;
+    flex: 0 0 auto; width: auto;
+    margin: 0;
+}
+#btns{
+  display: flex;
+  justify-content: space-between;
+}
+.articleBox a{
+    flex: 0 0 auto;  
+    justify-self: align-end;
+    color:black;
+}
+#alumniRow{
+    display: flex;
+    gap: 8px;
+}
+#sendMail{
+        align-self: flex-end;
+    justify-self: flex-end;
+    flex: 0 0 auto; width: auto;
+    margin: 0;
+    width: 3rem;
+    height: 3rem;
+    border: none;
+    transition: 
+        background-color 0.4s ease, /* Übergang der Hintergrundfarbe */
+        border-color 0.4s ease,      /* Übergang der Rahmenfarbe */
+        box-shadow 0.5s ease;
+    
+}
+.button-success {
+    background-color: #9fc245; /* Helles Grün */
+    border-color: #4CAF50;
+    color: white;
+    box-shadow: 0 0 15px #9fc245; /* Leucht-Effekt */
+}
+#adminPortal span .error{
+  margin-top: 8px;
+  color:red;
+  font-size: small;
+  text-align: left;
+ 
+}
+
+@media only screen and (min-width:600px) and (max-width:900px) {
+    #adminPortal{
+    width: 70%;
+    
+}
+}
+@media only screen and (min-width:900px){
+    #adminPortal {
+        width: 60%;
+
+        
+
+    }}

@@ -24,6 +24,7 @@ export type postObj ={
     "slug": string;
     "date": string;
     "grade":string | number;
+        "status"?:string,
     "author": string;
     "tag": string[];
     "summary": string;
@@ -38,6 +39,7 @@ export const defaultBlogPost: postObj = {
     "slug": "",
     "date": "",
     "grade":"" ,
+    "status":"",
     "author": "",
     "tag": [],
     "summary": "",

@@ -61,4 +61,23 @@ form span{
   border-radius: 8px;
   outline: none;
   background-color: transparent;}
-                
+    
+.statusIcon{
+    margin: 0;
+      object-fit: contain; 
+max-width: 80%; 
+    max-height: 80%;
+}
+.statusBox button{
+  background-color: #b4b4b4;
+  max-width: 4rem;
+  padding: 0px;
+}
+.statusBox{
+  display: flex;
+  max-height: 4rem;
+  justify-content: space-around;
+}
+.selectedStatus{
+  border: 2px solid black;
+}

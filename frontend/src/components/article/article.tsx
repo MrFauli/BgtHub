@@ -85,7 +85,7 @@ function Article(){
                 <Tag tags={post?.tag ? post.tag : []}/>
                 <div className="data-line">
                     <div className="author"><Link to={`${post?.author}`}>{post?.author}</Link></div> -
-                    <div className="grade">{post?.grade}</div>
+                    <div className="grade">{post?.grade ? post.grade : post?.status == "Lehrer" ? "Lehrer" : "Alumni" }</div>
                 </div>
                 <div className="publish-year">{post?.date}</div>
 

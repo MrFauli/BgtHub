@@ -78,6 +78,62 @@ const codeEmail=(code)=> {
     </body>
   `;
 }
+const alumniInviteEmail = () => {
+  return `
+    <body style="margin:0;padding:0;background-color:#f4f6f8;font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;">
+      <table role="presentation" style="width:100%;border-collapse:collapse;">
+        <tr>
+          <td align="center" style="padding:40px 0;">
+            <table role="presentation" style="max-width:600px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+              <tr>
+                <td style="padding:30px;text-align:center;">
+                  
+                  <h1 style="font-size:24px;margin-bottom:16px;">Hey du da 👋</h1>
+                  
+                  <p style="font-size:16px;line-height:1.5;margin:0 0 20px 0;">
+                    Du wurdest eingeladen, als ehemaliger Schüler des BGTs deine Projekte auf <b>BGT-Hub</b> zu stellen.
+                  </p>
+                  
+                  <p style="font-size:16px;line-height:1.5;margin:0 0 10px 0;font-weight:bold;">
+                    Wir danken dir schonmal für deine Zeit, gemeinsam zeigen wir, was das BGT kann.
+                  </p>
+                  
+                  <p style="font-size:18px;margin-top:25px;margin-bottom:15px;color:#333;font-weight:600;">
+                    Folgendes musst du tun:
+                  </p>
+                  
+                  <div style="text-align:left;padding:0 20px 20px 20px;">
+                    <ol style="font-size:15px;line-height:1.8;margin:0;padding-left:20px;">
+                      <li style="margin-bottom:10px;">
+                        Gehe auf <a href="https://bgt-hub.me" style="color:#9fc245;text-decoration:none;font-weight:bold;">bgt-hub.me</a>
+                      </li>
+                      <li style="margin-bottom:10px;">
+                        Gehe auf Upload und dann auf Registrieren.
+                      </li>
+                      <li style="margin-bottom:10px;">
+                        Erstelle dir ein Konto als <>Alumni</  b> (das 3. Symbol) mit dieser E-Mail.
+                      </li>
+                      <li>
+                        Erstelle Posts über deine coolen Projekte!
+                      </li>
+                    </ol>
+                  </div>
+                  <p style="font-size:14px;color:#555;line-height:1.5;margin-top:20px;">
+                    Bei Fragen meld dich gerne!
+                    <br><br>
+                    Beste Grüße,<br>
+                    dein <b>BGT-Hub Team</b> 🚀
+                  </p>
+                  
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+  `;
+}
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -86,7 +142,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 // 📁 Absoluter Pfad zum Ordner "frontend/public/assets"
-const assetsPath = path.resolve(__dirname, "../frontend/public/assets");
+const assetsPath = path.resolve(__dirname, "../frontend/public/uploads/");
 
 const { types } = require('pg');
 types.setTypeParser(20, val => parseInt(val, 10));
@@ -105,9 +161,16 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + "-" + file.originalname);
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true); // ✅ Erlaubt
+        } else {
+            // 🛑 Fehler senden (wichtig: dies stoppt den PUT-Request)
+            cb(new Error('Ungültiger Dateityp.'), false); 
+        }
+    }, storage: storage });
 
-app.use("/assets", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads/", express.static(path.join(__dirname, "uploads")));
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
@@ -170,7 +233,7 @@ const getProjects = (req,res,next) =>{
   
   pool.query(
     `SELECT p.id AS id, p.title AS title, p.slug AS slug, p.date AS date, 
-    a.grade AS grade, a.name AS author, p.tag AS tag, p.summary AS summary, 
+    a.grade AS grade, a.name AS author, a.status AS status, p.tag AS tag, p.summary AS summary, 
     p.cover_img AS "coverImage", p.content AS content, p.visible AS visible
     FROM posts p
     LEFT JOIN posts_authors pa ON pa.blog_id = p.id
@@ -191,14 +254,14 @@ app.post('/projects',ensureAuthenticated,upload.array('files'),async(req,res,nex
   console.log(req.body);
   const newBlog = JSON.parse(req.body.article);
   console.log(newBlog.content);
-  newBlog.coverImage = '/assets/'+req.files[0]?.filename;
+  newBlog.coverImage = '/uploads/'+req.files[0]?.filename;
   console.log(req.file);
   const email = req.session.passport.user;
   console.log(email);
   let index = 1;
   newBlog.content.map((el)=>{
     if(el.type == "image"){
-      el.src ='/assets/'+ req.files[index]?.filename;
+      el.src ='/uploads/'+ req.files[index]?.filename;
       index++;
     }
   })
@@ -239,14 +302,14 @@ app.put('/projects',ensureAuthenticated,upload.array('files'),async(req,res,next
     console.log("body");
   const newBlog = JSON.parse(req.body.article);
   console.log(newBlog.content);
-  newBlog.coverImage = '/assets/'+req.files[0]?.filename;
+  newBlog.coverImage = '/uploads/'+req.files[0]?.filename;
   console.log(req.file);
   const email = req.session.passport.user;
   console.log(email);
   let index = 1;
   newBlog.content.map((el)=>{
     if(el.type == "image"){
-      el.src ='/assets/'+ req.files[index]?.filename;
+      el.src ='/uploads/'+ req.files[index]?.filename;
       index++;
     }
   })
@@ -272,7 +335,8 @@ app.put('/projects',ensureAuthenticated,upload.array('files'),async(req,res,next
         }
             console.log(result.rows[0]);
             console.log("Updated");
-            oldImages.forEach((imgPath) => {
+
+           oldImages.forEach((imgPath) => {
             const fullPath = path.join('../frontend/public',imgPath);
             console.log(fullPath);
             fs.unlink(fullPath, (err) => {
@@ -287,12 +351,19 @@ app.delete('/projects/:id',ensureAuthenticated,(req,res,next)=>{
   const id = req.params.id;
   const email = req.session.passport.user;
   pool.query(`SELECT author_email FROM posts_authors
-              WHERE blog_id = $1;`,[id],(error,result)=>{
-                 if(error){
+              WHERE blog_id = $1;`,[id],(err,result)=>{
+                 if(err){
            res.status(400).send();
             throw error;
-        }       let author_email = result.rows[0];
-                if(author_email.author_email != email){
+
+        }       
+        pool.query('SELECT admin_rechte FROM authors WHERE email = $1;',[req.session.passport.user],(error,admin)=>{
+      if(error){
+      res.status(400).send();
+      throw err;
+      }
+      let author_email = result.rows[0];
+                if(author_email.author_email != email && !admin.rows[0].admin_rechte){
                   return res.status(400).send(false);
                 }
                 console.log(id);
@@ -304,7 +375,7 @@ app.delete('/projects/:id',ensureAuthenticated,(req,res,next)=>{
                               }
                               res.status(200).send(true);
                             })
-              })
+              })})
 })
 
 app.get('/projects/tag/',(req,res,next)=>{
@@ -423,12 +494,18 @@ app.get('/user/email/:email',(req,res,next)=>{
       throw error;
     }
     if(result.rows.length > 0){
-      console.log(true);
-        res.status(200).send(true);
+
+      if(!result.rows[0].name && result.rows[0].status == "Alumni"){
+        
+        res.status(200).json({ status: "Alumni" });
+      }
+      else{        
+        res.status(200).json({ status: true });}
+
     }
     else{
       console.log(false);
-        res.status(200).send(false);
+        res.status(200).json({ status: false });;
     }
   
   })
@@ -439,7 +516,7 @@ app.get('/user/authcode/:email',async(req,res,next)=>{
   try{
     const info = await transporter.sendMail({
     from: '"BGT-HUB" <techsloth.info@gmail.com>',
-    to:'gianlucacar.rossi@bbs-me.org',
+    to:req.params.email,
     subject: "Dein Bestätigungscode 🔐",
     text: `Dein Code lautet: ${code}`,
     html: codeEmail(code),
@@ -456,8 +533,7 @@ app.get('/user/authcode/:email',async(req,res,next)=>{
 });
 
 app.post('/user/login/',(req,res,next) =>{passport.authenticate("local",(err,user,info)=>{
-  console.log(user);
-    console.log('Inside the homepage callback function')
+
   console.log(req.sessionID)
   if(err) return res.status(400).send(err);
 
@@ -479,16 +555,93 @@ app.post('/user/register/',async(req,res,next)=>{
   const body = req.body;
   console.log(body);
  const hash = await bcrypt.hash(body.password, SALT_ROUNDS);
- pool.query(`INSERT INTO authors(name,email,grade,alumni,password)
-            VALUES($1,$2,$3,$4,$5)`,[body.name,body.email,body.grade,false,hash],(error,result)=>{
+ if(body.status== "Schüler"){
+ pool.query(`INSERT INTO authors(name,email,grade,password,status,admin_rechte)
+            VALUES($1,$2,$3,$4,$5,$6)`,[body.name,body.email,body.grade,hash,body.status,false],(error,result)=>{
               if(error){
                 res.status(400).send();
                 throw error;
               }
-              res.status(201).send(result.rows[0]);
-            })
- 
+              res.status(201).send();
+            })}
+  else if(body.status== "Lehrer"){
+ pool.query(`INSERT INTO authors(name,email,password,status,admin_rechte)
+            VALUES($1,$2,$3,$4,$5)`,[body.name,body.email,hash,body.status,true],(error,result)=>{
+              if(error){
+                res.status(400).send();
+                throw error;
+              }
+              res.status(201).send();
+            })}
 });
+app.post('/user/invite/:email',ensureAuthenticated,(req,res,next)=>{
+  const mail = req.params.email;
+  pool.query('SELECT admin_rechte FROM authors WHERE email = $1;',[req.session.passport.user],(error,status)=>{
+    if(error){
+      res.status(400).send();
+      throw error;
+    }
+
+      if(!status.rows[0].admin_rechte){
+        res.status(200).send(false);
+      }
+
+      else{
+
+
+  pool.query(`INSERT INTO authors(email,status,admin_rechte)
+              VALUES($1,$2,$3)`,[mail,"Alumni",false],async(error,result)=>{
+                if(error){
+                  res.status(400).send();
+                  throw error;
+                }
+                try{
+                  const info = await transporter.sendMail({
+                  from: '"BGT-HUB" <techsloth.info@gmail.com>',
+                  to:mail,
+                  subject: "Einladung zum BGT-Hub",
+                  text: `Hey du da 👋
+Du wurdest eingeladen, als ehemaliger Schüler des BGTs deine Projekte auf BGT-Hub zu stellen.
+Wir danken dir schonmal für deine Zeit, gemeinsam zeigen wir, was das BGT kann.
+
+Folgendes musst du tun:
+1. Gehe auf bgt-hub.me (verlinke zu der domain)
+2. Gehe auf Upload und dann auf Regristrieren
+3. Erstelle dir ein Konto als Alumni(das 3 Symbol) mit dieser E-Mail
+4. Erstelle Posts über deine coolen Projekte!
+
+Bei Fragen meld dich gerne!
+
+Beste Grüße,
+dein BGT-Hub Team`,
+                  html: alumniInviteEmail(),
+                });
+                
+                console.log("✅ Mail gesendet:", info.messageId);
+                  res.status(200).send();
+                } catch (error) {
+                  console.error("❌ Fehler beim Senden der E-Mail:", error);
+                  res.status(400).send(error.message);
+                }
+
+              })      }
+  })
+})
+app.put('/user/register/',async(req,res,next)=>{
+  const body = req.body;
+  console.log(body);
+ const hash = await bcrypt.hash(body.password, SALT_ROUNDS);
+ 
+ pool.query(`UPDATE authors
+              SET name = $1, password = $2, status = $3, admin_rechte = $4
+              WHERE email = $5;`,[body.name,hash,body.status,body.admin_rechte, body.email],(error,result)=>{
+              if(error){
+                res.status(400).send();
+                throw error;
+              }
+              res.status(201).send();
+            })}
+          );
 app.get('/user/articles',ensureAuthenticated,(req,res,next)=>{
   const userEmail  = req.session.passport.user;
    pool.query(
@@ -499,17 +652,21 @@ app.get('/user/articles',ensureAuthenticated,(req,res,next)=>{
     LEFT JOIN posts_authors pa ON pa.blog_id = p.id
     LEFT JOIN authors a ON a.email = pa.author_email
     WHERE $1 = a.email
-    ORDER BY id ASC;`,[userEmail],(error,results)=>{
+    ORDER BY id ASC;`,[userEmail],(error,result)=>{
     if(error){
       
       res.status(400).send();
       throw error;
     }
-    
-    res.status(200).json({result : results.rows,accept:true});
-    
+    pool.query('SELECT admin_rechte FROM authors WHERE email = $1',[userEmail],(error,results)=>{
+      if(error){
+        res.status(400).send();
+      throw error;}
+      res.status(200).json({result: result.rows,accept:true,admin_rechte: results.rows[0].admin_rechte});
+      console.log(results.rows);
+      
+    })
 
-    console.log(results.rows);
   });
 });
 app.get('/user/data',ensureAuthenticated,(req,res,next)=>{
@@ -534,11 +691,19 @@ app.post('/user/articles/togglevisible',ensureAuthenticated,(req,res,next)=>{
       res.status(400).send();
       throw err;
     }
+    pool.query('SELECT admin_rechte FROM authors WHERE email = $1;',[req.session.passport.user],(error,admin)=>{
+if(error){
+      res.status(400).send();
+      throw err;
+    }
+    
     console.log("article:");
-    console.log(result.rows[0]);
-    if(result.rows[0].author_email != req.session.passport.user){
+    console.log(result.rows[0].author_email);
+    console.log( admin.rows[0].admin_rechte);
+    if(result.rows[0].author_email != req.session.passport.user  && !admin.rows[0].admin_rechte){
       return res.redirect('/user/articles');
     }
+    console.log("durch");
     pool.query(`UPDATE posts 
                 SET visible = NOT visible
                 WHERE id = $1`,[id],(err,result2)=>{
@@ -550,7 +715,7 @@ app.post('/user/articles/togglevisible',ensureAuthenticated,(req,res,next)=>{
                   console.log("Changed");
                   res.redirect('/user/articles');
                 })
-  })
+  })})
 
 })
 app.get("/user/logout/", ensureAuthenticated, (req, res) => {

@@ -10,6 +10,8 @@ import { Route,RouterProvider,createBrowserRouter, createRoutesFromElements } fr
 import LoginSide from './components/login/login';
 import RegisterSide from './components/register/register';
 import Dashboard from './components/dashboard/dashboard';
+import AdminPortal from './components/adminPortal/adminPortal';
+import Impressum from './components/impressum/impressum';
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -27,6 +29,8 @@ const router = createBrowserRouter(createRoutesFromElements(
      <Route path="/dashboard/create" element={<CreateBlog/>}/>
      <Route path="/dashboard/edit/:article" element={<CreateBlog/>}/>
      <Route path="/dashboard" element={<Dashboard/>}/>
+     <Route path="/admin" element={<AdminPortal></AdminPortal>}/>
+     <Route path="/impressum" element={<Impressum></Impressum>}/>
   </Route>
 
 ));

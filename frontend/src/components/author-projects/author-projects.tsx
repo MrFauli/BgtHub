@@ -3,7 +3,8 @@ import { Link,useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { postObj } from "../../types/posts";
 import BackBtn from "../backBtn/backBtn";
-
+import './author-projects.css'
+;
 function AuthorProjects(){
     const {author} = useParams();
         const [posts,setPosts] = useState<postObj[]>([]);
@@ -18,10 +19,11 @@ function AuthorProjects(){
 
 
     return(
-        <div style={{ position: 'relative', width: '100%', paddingTop:'5%',color:'inherit'}} >
+        <div id="authorArticle" >
            <BackBtn onClick={()=>navigate(-1)}/>
+            <h1>{author}</h1>
             {articles.map((article)=>(
-                <h1 style={{color:'inherit'}}><Link to={`/projekte/${article.slug}`}>{article.title}</Link></h1>
+                <h2 style={{color:'inherit',marginTop:"0",marginBottom:"0.5rem", textAlign:"left"}}><Link to={`/projekte/${article.slug}`}>{article.title}</Link></h2>
             ))}
         </div>
     )

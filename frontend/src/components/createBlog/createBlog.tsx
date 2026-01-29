@@ -39,6 +39,7 @@ function CreateBlog(){
     const [cover, setCover] = useState<File|null>(null);
     const [oldBlog,setOldBlog] = useState<postObj>();
     const [checkedBlog,setCheckedBlock] =useState<boolean>();
+    const [oldCover,setOldCover] = useState<File|null>();
     const checkAllowed = () =>{
                  fetch("http://localhost:5000/user/data", {
             method: "GET",
@@ -59,13 +60,44 @@ function CreateBlog(){
             })
             .catch(err => console.log(err));
     }
-    const urlToFile = async(url: string,)=> {
+   const getMimeTypeFromFilename = (fileName:String) => {
+  const extension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+  
+  switch (extension) {
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'png':
+      return 'image/png';
+    case 'gif':
+      return 'image/gif';
+    case 'webp':
+      return 'image/webp';
+    default:
+      // Wichtig: Generischen Typ verwenden, falls unbekannt, aber idealerweise sollte dies nicht passieren.
+      return 'application/octet-stream'; 
+  }
+};
+    const urlToFile = async(url: string)=> {
+        try{
     const response = await fetch(url);
+    if (!response.ok) {
+            console.error(`Fehler beim Laden der Bild-URL: ${response.status} ${response.statusText}`);
+            // Hier könnten Sie einen leeren Blob oder null zurückgeben
+            throw new Error('Fehler beim Abrufen der Bilddaten'); 
+        }
     const blob = await response.blob();
-    const filename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."));
-    // Hier optional: MIME-Typ beibehalten
-    const file = new File([blob], filename, { type: blob.type });
-    return file;
+   const filename = url.substring(url.lastIndexOf("/") + 1);
+
+    const mimeType = getMimeTypeFromFilename(filename);
+
+    const file = new File([blob], filename, { type: mimeType });
+    return file;}
+    catch(error){
+        console.error("Fehler im urlToFile Prozess:", error);
+        // Fehlerhaften oder leeren Blob zurückgeben
+        return null;
+    }
     }
     useEffect(()=>{
         checkAllowed();
@@ -96,10 +128,18 @@ function CreateBlog(){
             setTags(oldBlog.tag);
             setYear(oldBlog.date);
             setSummary(oldBlog.summary);
-            urlToFile(oldBlog.coverImage).then(setCover);
+             const fileName = oldBlog.coverImage.replace("/^\/uploads\//", '');
+                    urlToFile(fileName)
+            urlToFile(fileName).then(setCover);
+            console.log("OldCover");
+            urlToFile(oldBlog.coverImage).then(setOldCover);
+            console.log(oldBlog.coverImage);
             blockRef.current?.setContent(oldBlog.content);
         }
-    },[oldBlog])
+    },[oldBlog]);
+    useEffect(()=>{
+        console.log(oldCover);
+    },[oldCover]);
     useEffect(()=>{
         if(getUser>0){
         if(user.name.length > 0){
@@ -163,19 +203,24 @@ function CreateBlog(){
             console.log("filesss");
             const formData = new FormData();
             formData.append('article',JSON.stringify(blog));
-            cover && formData.append('files',cover);
+            const newCoverName = cover?.name.replace(/^\d+-/, '');
+            cover && formData.append('files',cover,newCoverName);
             fileContent && fileContent.forEach((newFile) => {
-
-                if(newFile)formData.append('files', newFile);
+                const newName = newFile.name.replace(/^\d+-/, '');
+                if(newFile)formData.append('files', newFile,newName);
                 console.log(newFile);
                 });
-            console.log(`File: ${cover}`);
+            console.log(`Cover: ${cover}`);
+
             fileContent && console.log(fileContent.length);
             console.log(formData);
+            console.log(cover);
+            console.log(fileContent);
             for (const [key, value] of formData.entries()) {
                 console.log(key, value);
                 }
             if(oldBlog){
+
             const res = await fetch('http://localhost:5000/projects',{
                 method:"PUT",
                 
@@ -269,7 +314,13 @@ function CreateBlog(){
                 ...prev,
                  coverImage: "Lade ein Bild hoch."
             }))
-           
+        }
+        else if(!cover.type.startsWith('image/')){
+            setErrors((prev) => ({
+                ...prev,
+                 coverImage: "Bild muss .jpg, .png, .wepq oder .gif sein!"
+            }))
+            setCover(null);
         }
         const content =  blockRef.current?.getContent();+
         console.log("Hello");
@@ -326,7 +377,7 @@ function CreateBlog(){
             </div>
             {<span className="error">{errors.tags}</span>}
             <label style={{borderColor: errors.coverImage == ""? ""  : "red"}} id="uploadBox" htmlFor="coverImage">
-            <input type="file" id="coverImage" name="coverImage" accept='image/*'onChange={handleFileChange}  hidden/>
+            <input type="file"accept="image/jpeg, image/png, image/gif, image/webp" id="coverImage" name="coverImage" onChange={handleFileChange}  hidden/>
             <img style={{color:"green"}}src={uploadIcon} id="uploadIcon"/>
             <div id="uploadText">{cover == null ? "Coverbild hochladen" : "Zum ändern, neues Bild hochladen"}</div> 
             <div id="previewBox"></div>
@@ -337,9 +388,10 @@ function CreateBlog(){
 
            </textarea>
             {<span className="error">{summary.length > 120 ? "Maximal 120 Zeichen." : errors.summary}</span>}
-            <label>Content vom Artikel: <br /> {title}
+            <div style={{    marginTop: "0.5rem",fontSize: "large",fontWeight:"bold" }}>
+                Content vom Artikel: <br /> {title}
             <CreateBlogContent ref={blockRef}/>
-            </label>
+            </div>
             {<span className="error">{errors.content}</span>}
             <div id="submitBtns">
                 {oldBlog? <button  type="button" id="delete" onClick={deleteArticle}>Löschen</button>:""}
