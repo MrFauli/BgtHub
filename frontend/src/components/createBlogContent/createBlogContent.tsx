@@ -2,7 +2,7 @@ import React, {forwardRef, useEffect, useImperativeHandle,useState} from 'react'
 import uploadIcon from '/assets/uploadIcon.png';
 import type { ContentBlock } from '../../types/content';
 import './createBlogContent.css';
-import type { postObj } from '../../types/posts';
+
 export type contentFuncs ={
     getContent: () => {content: ContentBlock[],files:File[]} | boolean;
     setContent: (content:ContentBlock[]) => void;
@@ -11,8 +11,8 @@ interface FileEntry {
   index: number;
   file: File;
 }
-function CreateBlogContent(props:{},ref: React.Ref<contentFuncs>){
-
+function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
+    
     const [blocks, setBlocks] = useState<ContentBlock[]>([]);
     const [files,setFiles] =  useState<FileEntry[]>([]);
     const [error,setError] = useState<string[]>([]);

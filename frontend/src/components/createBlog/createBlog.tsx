@@ -3,7 +3,6 @@ import  { defaultBlogPost, type postObj } from '../../types/posts';
 
 import uploadIcon from '/assets/uploadIcon.png';
 import './createBlog.css';
-import type { ContentBlock } from '../../types/content';
 import CreateBlogContent, { type contentFuncs } from '../createBlogContent/createBlogContent';
 import { useNavigate , useLocation,useParams} from "react-router-dom";
 
@@ -31,8 +30,7 @@ function CreateBlog(){
         });
     const {article} = useParams();
     const [title,setTitle] = useState("");
-    const [name,setName] = useState("");
-    const [grade,setGrade] = useState("");
+
     const [tags,setTags] = useState<string[]>([]);
     const [year,setYear] = useState("");
     const [summary,setSummary] = useState("");
@@ -41,9 +39,9 @@ function CreateBlog(){
     const [checkedBlog,setCheckedBlock] =useState<boolean>();
     const [oldCover,setOldCover] = useState<File|null>();
     const checkAllowed = () =>{
-                 fetch("http://localhost:5000/user/data", {
+            fetch("http://localhost:5000/user/data", {
             method: "GET",
-            credentials: "include" // wichtig für Cookies
+            credentials: "include" 
             })
             .then(res => res.json())
             .then(data => {

@@ -6,7 +6,7 @@ import "./adminPortal.css";
 function AdminPortal(){
 
         const [admin,setAdmin] = useState();
-        const [logedIn,setLogedIn] = useState<boolean>();
+
         const [getAdmin,setGetAdmin] = useState(0);
         const [alumniMail,setAlumniMail] = useState<string>("");
         const [alumniError,setAlumniError] = useState("");
@@ -23,7 +23,7 @@ function AdminPortal(){
             .then(res => res.json())
             .then(data => {
             if(data)
-               {setLogedIn(data.accept); 
+               {
 
                 setAdmin(data.admin_rechte);
                 console.log("admin:"+data.admin_rechte)
@@ -142,7 +142,7 @@ function AdminPortal(){
             credentials: "include" // wichtig für Cookies
             })
             .then(res => res.json())
-            .then(data => {
+            .then(() => {
                  fetch("http://localhost:5000/projects", {
             method: "GET",
             credentials: "include" // wichtig für Cookies
