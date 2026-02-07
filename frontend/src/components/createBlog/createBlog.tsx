@@ -5,7 +5,7 @@ import uploadIcon from '/assets/uploadIcon.png';
 import './createBlog.css';
 import CreateBlogContent, { type contentFuncs } from '../createBlogContent/createBlogContent';
 import { useNavigate , useLocation,useParams} from "react-router-dom";
-
+import { API_URL } from '../../config';
 interface FormErrors {
   title: string;
   year: string;
@@ -39,7 +39,7 @@ function CreateBlog(){
     const [checkedBlog,setCheckedBlock] =useState<boolean>();
     const [oldCover,setOldCover] = useState<File|null>();
     const checkAllowed = () =>{
-            fetch("http://localhost:5000/user/data", {
+            fetch(`${API_URL}/user/data`, {
             method: "GET",
             credentials: "include" 
             })
@@ -102,7 +102,7 @@ function CreateBlog(){
         console.log(location.pathname);
        
         if( article && location.pathname.includes("/edit/")){
-            fetch(`http://localhost:5000/user/article/${article}`, {
+            fetch(`${API_URL}/user/article/${article}`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })
@@ -219,7 +219,7 @@ function CreateBlog(){
                 }
             if(oldBlog){
 
-            const res = await fetch('http://localhost:5000/projects',{
+            const res = await fetch(`${API_URL}/projects`,{
                 method:"PUT",
                 
                 credentials: "include",
@@ -233,7 +233,7 @@ function CreateBlog(){
             navigate(`/projekte/${blog.slug}`);
             }
             else{
-                const res = await fetch('http://localhost:5000/projects',{
+                const res = await fetch(`${API_URL}/projects`,{
                 method:"POST",
                 
                 credentials: "include",
@@ -337,7 +337,7 @@ function CreateBlog(){
     const deleteArticle = () =>{
         console.log("Löschen");
         if(oldBlog){
-        fetch(`http://localhost:5000/projects/${oldBlog.id}`, {
+        fetch(`${API_URL}/projects/${oldBlog.id}`, {
             method: "DELETE",
             credentials: "include" // wichtig für Cookies
             })

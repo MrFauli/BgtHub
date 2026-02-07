@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import ActionBtn from "../actionbtn/actionbtn";
 import { type postObj } from "../../types/posts";
 import "./adminPortal.css";
+import { API_URL } from "../../config";
+
 function AdminPortal(){
 
         const [admin,setAdmin] = useState();
@@ -16,7 +18,7 @@ function AdminPortal(){
         const [articles,setArticles] = useState<postObj[]>([]);
         const navigate = useNavigate();
         useEffect(()=>{
-            fetch("http://localhost:5000/user/articles", {
+            fetch(`${API_URL}/user/articles`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })
@@ -30,7 +32,7 @@ function AdminPortal(){
                 console.log(data)
                }
             setGetAdmin(prev => prev+1);
-            fetch("http://localhost:5000/projects", {
+            fetch(`${API_URL}/projects`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })
@@ -56,7 +58,7 @@ function AdminPortal(){
             }}
         })
             const logout = () =>{
-        fetch('http://localhost:5000/user/logout/',{
+        fetch(`${API_URL}/user/logout/`,{
                 method:"GET",
                 credentials: "include"
                })
@@ -67,7 +69,7 @@ function AdminPortal(){
         const inviteAlumni = () =>{
             const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if(regex.test(alumniMail)){
-                 fetch(`http://localhost:5000/user/email/${alumniMail}`)
+                 fetch(`${API_URL}/user/email/${alumniMail}`)
             .then(res => res.json())
             .then(data => {
               console.log("DATA:", data);
@@ -85,7 +87,7 @@ function AdminPortal(){
             if(emailTrigger>0){
             if(!existEmail && alumniMail.length > 0){
                 setAlumniError("");
-                fetch(`http://localhost:5000/user/invite/${alumniMail}`,{method:"POST",credentials: "include"})
+                fetch(`${API_URL}/user/invite/${alumniMail}`,{method:"POST",credentials: "include"})
                 .then(data=>{
                     if(data.status == 200){
                         setAlumniMail("");
@@ -101,7 +103,7 @@ function AdminPortal(){
         },[emailTrigger])
         const changeVisible = (id:number)=>{
         console.log(id);
-            fetch('http://localhost:5000/user/articles/togglevisible',{
+            fetch(`${API_URL}/user/articles/togglevisible`,{
                 method:"POST",
                 credentials: "include", 
                 headers: {
@@ -117,7 +119,7 @@ function AdminPortal(){
             }       
             else{
                {
-            fetch("http://localhost:5000/projects", {
+            fetch(`${API_URL}/projects`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })
@@ -137,13 +139,13 @@ function AdminPortal(){
     }
      const deleteArticle = (id:number) =>{
         
-        fetch(`http://localhost:5000/projects/${id}`, {
+        fetch(`${API_URL}/projects/${id}`, {
             method: "DELETE",
             credentials: "include" // wichtig für Cookies
             })
             .then(res => res.json())
             .then(() => {
-                 fetch("http://localhost:5000/projects", {
+                 fetch(`${API_URL}/projects`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { type postObj } from "../../types/posts";
 import './dashboard.css';
+import { API_URL } from "../../config";
 import ActionBtn from "../actionbtn/actionbtn";
 function Dashboard(){
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ function Dashboard(){
     const [logedIn,setLogedIn] = useState<boolean>();
     const [getUser,setGetUser] = useState<number>(0);
     useEffect(()=>{
-            fetch("http://localhost:5000/user/articles", {
+            fetch(`${API_URL}/user/articles`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })
@@ -74,7 +75,7 @@ function Dashboard(){
             .catch(err => console.log(err));
     }
     const logout = () =>{
-        fetch('http://localhost:5000/user/logout/',{
+        fetch(`${API_URL}/user/logout/`,{
                 method:"GET",
                 credentials: "include"
                })

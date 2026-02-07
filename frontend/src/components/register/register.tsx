@@ -1,7 +1,7 @@
 import Box from "../box/box";
 import './register.css';
 import { useState,useRef,useEffect } from 'react';
-
+import { API_URL } from "../../config";
 import { Link,useNavigate } from 'react-router-dom';
 interface FormErrors {
   status:string;
@@ -73,7 +73,7 @@ function RegisterSide(){
             console.log("fetch überprüfen");
             console.log(existEmail)
             
-            fetch(`http://localhost:5000/user/email/${email}`)
+            fetch(`${API_URL}/user/email/${email}`)
             .then(res => res.json())
             .then(data => {
               console.log("DATA:", data);
@@ -99,7 +99,7 @@ function RegisterSide(){
       
            if(existEmail && email.length >0 && existEmail == "Alumni" && status == "Alumni" && registerError.name == "" && registerError.email =="" && registerError.grade == "" && registerError.password == ""){
 setStep("code");
-            fetch(`http://localhost:5000/user/authcode/${email}`)
+            fetch(`${API_URL}/user/authcode/${email}`)
             .then(res => res.json())
             .then(data => {setCode(data), console.log(data)})
             .catch(err => console.log(err));
@@ -114,7 +114,7 @@ setStep("code");
      
         else if(!existEmail && email.length > 0 && registerError.name == "" && registerError.email =="" && registerError.grade == "" && registerError.password == "" && status != "Alumni"){
         setStep("code");
-            fetch(`http://localhost:5000/user/authcode/${email}`)
+            fetch(`${API_URL}/user/authcode/${email}`)
             .then(res => res.json())
             .then(data => {setCode(data), console.log(data)})
             .catch(err => console.log(err));
@@ -132,7 +132,7 @@ setStep("code");
         if(finalCode.length === 6){
   
             if(finalCode == code && status!="Alumni"){
-                fetch('http://localhost:5000/user/register',{
+                fetch(`${API_URL}/user/register`,{
                 method:"POST",
                 headers: {
                     "Content-Type": "application/json", // sagt dem Server: das ist JSON!
@@ -151,7 +151,7 @@ setStep("code");
                 navigate("/login");
             }
             else if(finalCode == code && status=="Alumni") {
-              fetch('http://localhost:5000/user/register',{
+              fetch(`${API_URL}/user/register`,{
                 method:"PUT",
                 headers: {
                     "Content-Type": "application/json", // sagt dem Server: das ist JSON!

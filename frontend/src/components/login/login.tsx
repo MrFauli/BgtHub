@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import Box from "../box/box";
 import './login.css';
 import { Link,useNavigate } from 'react-router-dom';
-
+import { API_URL } from "../../config";
 function LoginSide(){
     
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ function LoginSide(){
     const [logedIn,setLogedIn] = useState<boolean>();
     
     useEffect(()=>{
-            fetch("http://localhost:5000/user/logedin", {
+            fetch(`${API_URL}/user/logedin`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })
@@ -48,7 +48,7 @@ function LoginSide(){
         if(email.length > 0 && password.length > 6){
 
         
-        fetch('http://localhost:5000/user/login/',{
+        fetch(`${API_URL}/user/login/`,{
             method:"POST",
             
             headers: {

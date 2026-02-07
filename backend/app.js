@@ -15,7 +15,7 @@ const fs =  require('fs');
 require('dotenv').config()
 
 app.use(  cors({
-    origin: "http://localhost:5173", // dein React-Frontend
+    origin: true, // dein React-Frontend
     credentials: true, // <--- wichtig!
   })); // sehr wichtig für lokale Entwicklung
 
@@ -147,7 +147,7 @@ const assetsPath = path.resolve(__dirname, "../frontend/public/uploads/");
 const { types } = require('pg');
 types.setTypeParser(20, val => parseInt(val, 10));
 const pool = new Pool({
-  user: 'me',
+  user: process.env.DB_NAME,
   host: 'localhost',
   database: 'bgtHub',
   password: process.env.DB_PASS,

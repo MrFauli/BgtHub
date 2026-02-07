@@ -3,12 +3,13 @@ import {useState,useEffect} from 'react';
 import BlogPreview from '../blogPreview/blogPreview';
 import type { postObj } from '../../types/posts';
 import './projekt-side.css';
+import { API_URL } from '../../config';
 function ProjektSide(){
     const [filter,setFilter] = useState("")
     const [posts,setPosts] = useState<postObj[]>([]);
     useEffect(()=>{
         console.log(`filter: ${filter}`);
-        let url = `http://localhost:5000/projects/tag/`;
+        let url = `${API_URL}/projects/tag/`;
         if(filter.length != 0){
             url += `?tag=${filter}`;
         }

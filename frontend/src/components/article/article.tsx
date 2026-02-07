@@ -2,7 +2,7 @@ import {useEffect,useState} from "react";
 import type {postObj} from '../../types/posts';
 import type {ContentBlock} from '../../types/content';
 import { Link,useParams,useNavigate } from "react-router-dom";
-
+import { API_URL } from "../../config";
 import Tag from "../tag/tag";
 import './article.css';
 import BackBtn from "../backBtn/backBtn";
@@ -12,7 +12,7 @@ function Article(){
     const [posts,setPosts] = useState<postObj[]>([]);
     const [post,setPost] = useState<postObj>();
     useEffect(()=>{
-        fetch("http://localhost:5000/projects")
+        fetch(`${API_URL}/projects`)
             .then(res => res.json())
             .then(data => {
                 console.log("data");

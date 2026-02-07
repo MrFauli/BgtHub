@@ -5,7 +5,7 @@ import LeftBtn from '../left-btn/left-btn';
 import RightBtn from '../right-btn/right-btn';
 import type {postObj} from '../../types/posts';
 import './news.css';
-
+import { API_URL } from '../../config';
 function News(){
     const [postsNum,setPostsNum] = useState(3);
     const [touchStart,setTouchStart] = useState(0);
@@ -30,7 +30,7 @@ function News(){
     },[postsNum]);   
 
     useEffect(()=>{
-        fetch("http://localhost:5000/projects")
+        fetch(`${API_URL}/projects`)
             .then(res => res.json())
             .then(data => {
                 setPosts(()=>data.filter((article:postObj) => article.visible == true));

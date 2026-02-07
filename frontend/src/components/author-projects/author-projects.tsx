@@ -3,13 +3,13 @@ import { Link,useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { postObj } from "../../types/posts";
 import BackBtn from "../backBtn/backBtn";
-import './author-projects.css'
-;
+import './author-projects.css';
+import { API_URL } from "../../config";
 function AuthorProjects(){
     const {author} = useParams();
         const [posts,setPosts] = useState<postObj[]>([]);
     useEffect(()=>{
-        fetch(`http://localhost:5000/projects/author/${author}`)
+        fetch(`${API_URL}/projects/author/${author}`)
             .then(res => res.json())
             .then(data => setPosts(data))
             .catch(err => console.log(err));
