@@ -5,8 +5,9 @@ function Opener(){
 
     return(
         <section id="open">
-            <h1><span style={{color: "#4df444"}}>Berufliches</span> <span style={{color:"#2cade3"}}>Gymnasium</span> <span style={{color:"#e32185"}}>Technik</span></h1>
-            <p>Willkommen auf der Webseite des Project Hubs vom BGT! Hier findest du alle Möglichen Projekten, die von den Schülerinnen umgesetzt worden.<br/>Viel Spaß beim durchforsten.</p>
+            <h1><span style={{color:""}}>Projekte des BGT's</span></h1>
+            <p>Entdecke die spannendesten Schülerprojekte, des Beruflichen Gymnasium Techik.
+            </p>
 
         </section>
     )

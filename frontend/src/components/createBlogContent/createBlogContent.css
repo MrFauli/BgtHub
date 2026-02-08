@@ -45,6 +45,11 @@ label{
     margin-top: 1rem;
     justify-content: space-between;
 }
+.createBtns button{
+   color:inherit
+}
+
+
 .contentBlock{
     display: flex;
     flex-direction: column;

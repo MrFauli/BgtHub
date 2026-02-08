@@ -5,7 +5,7 @@ import LeftBtn from '../left-btn/left-btn';
 import RightBtn from '../right-btn/right-btn';
 import type {postObj} from '../../types/posts';
 import './news.css';
-import { API_URL } from '../../config';
+import { API_URL } from '../../config.ts';
 function News(){
     const [postsNum,setPostsNum] = useState(3);
     const [touchStart,setTouchStart] = useState(0);
@@ -66,20 +66,29 @@ function News(){
             console.log(`swipe left`);
         }
     },[touchEnd])
-   useEffect(() => {
-    if(!manual) return;
-    setManual(false);
-  const interval = setInterval(() => {
-    setTransitionSlide(true);
-    setSlide(slide => slide+1);
-    console.log(slide);
-    console.log("tick");
+//    useEffect(() => {
+//     if(!manual) return;
+//     setManual(false);
+//   const interval = setInterval(() => {
+//     setTransitionSlide(true);
+//     setSlide(slide => slide+1);
+//     console.log(slide);
+//     console.log("tick");
     
-  }, 15000);
+//   }, 15000);
 
-  return () => clearInterval(interval);
-}, [manual]); 
+//   return () => clearInterval(interval);
+// }, [manual]); 
+useEffect(() => {
 
+    const interval = setInterval(() => {
+        setTransitionSlide(true);
+        setSlide(prev => prev + 1);
+    }, 8000);
+
+
+    return () => clearInterval(interval);
+}, [slide, manual]);
 
     const swipeLeft = () =>{
         setSlide(slide-1);
@@ -90,13 +99,24 @@ function News(){
         setTouchEnd(e.changedTouches[0].pageX);
         
     }
-    const infiniteSwipe = () =>{
-        console.log(`infinteSwipe ${slide}`);
-        setTransitionSlide(false);
-        setSlide(slide <= 0 ? 3 : slide >= 4  ? 1 : slide);
-        console.log(`after ${slide}`);
+    // const infiniteSwipe = () =>{
+    //     console.log(`infinteSwipe ${slide}`);
+    //     setTransitionSlide(false);
+    //     setSlide(slide <= 0 ? 3 : slide >= 4  ? 1 : slide);
+    //     console.log(`after ${slide}`);
+    // }
+const infiniteSwipe = () => {
+
+    if (slide >= 4) {
+        setTransitionSlide(false); 
+        setSlide(1);              
+    } 
+
+    else if (slide <= 0) {
+        setTransitionSlide(false); 
+        setSlide(3);              
     }
-    
+};
     return(
         <div>
             <h2>Die neusten Projekte</h2>

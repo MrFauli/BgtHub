@@ -83,13 +83,13 @@ button:focus-visible {
   }
 } */
 :root[data-theme='light'] {
-  --text-color:#213547;
+  --text-color:#000000;
   body{
     color: var(--text-color);
-    background-color: #ffffff;
+    background-color: #7b7b7b;
   }
   a:hover {
-    color: #747bff;
+    /* color: #747bff; */
   }
   button {
     background-color: #f9f9f9;

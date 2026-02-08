@@ -17,20 +17,33 @@
     padding: 16px;
     line-height: 1.2;
     text-align: left;
-   
-}
 
+}
+#banner-title{
+    font-weight:800;
+    color:black;
+
+}
 p{
     margin-bottom: 8px;
 }
  @media only screen and (min-width:900px){
     #projekt-box{
-            width: 60%;
-
-    
+        width: 60%;
     }
     .projekt-text{
         padding: 24px;
     }
+    .projekt-banner{
+        height:140px
+    }
+    #banner-title{
+        font-size: 28px;
+    }
 
+}
+@media only screen and (min-width:600px) and (max-width:900px){
+   .projekt-banner{
+        height:100px
+    } 
 }

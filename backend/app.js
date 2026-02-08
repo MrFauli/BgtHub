@@ -13,7 +13,7 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const fs =  require('fs');
 require('dotenv').config()
-
+app.set('trust proxy', true);
 app.use(  cors({
     origin: true, // dein React-Frontend
     credentials: true, // <--- wichtig!

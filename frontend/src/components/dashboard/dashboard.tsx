@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { type postObj } from "../../types/posts";
 import './dashboard.css';
-import { API_URL } from "../../config";
+import { API_URL } from '../../config.ts';
 import ActionBtn from "../actionbtn/actionbtn";
 function Dashboard(){
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ function Dashboard(){
     },[getUser])
     const changeVisible = (id:number)=>{
         console.log(id);
-            fetch('http://localhost:5000/user/articles/togglevisible',{
+            fetch(`${API_URL}/user/articles/togglevisible`,{
                 method:"POST",
                 credentials: "include", // wichtig für Cookies
                 headers: {

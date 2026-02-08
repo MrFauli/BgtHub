@@ -79,9 +79,9 @@ function BgtBox(){
 
     return(<Box id={"bgt-box"}>
             <div id="typing-box">
-             <h1> <span id="type-space">{typedText}</span><div id="type-line" className={`${typeLineOn? "blink" : ""} `}></div></h1>
+             <h1 style={{marginTop:"1rem", marginBottom:0}}> <span id="type-space">{typedText}</span><div id="type-line" className={`${typeLineOn? "blink" : ""} `}></div></h1>
             </div>
-            <div className="bgt-text">
+            <div className="bgt-text" style={{marginBottom:"0.5rem"}}>
                 Werde jetzt ein Teil von ihm und erlebe, was es heißt, etwas zu lernen was einem etwas bringt!
             </div>
             <a target="_blank" href="https://bbs-me.de/berufliches-gymnasium/berufliches-gymnasium"><ActionBtn id="bgt-btn" color="#e48501">Mehr Infos!</ActionBtn></a>

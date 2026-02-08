@@ -5,7 +5,7 @@ import uploadIcon from '/assets/uploadIcon.png';
 import './createBlog.css';
 import CreateBlogContent, { type contentFuncs } from '../createBlogContent/createBlogContent';
 import { useNavigate , useLocation,useParams} from "react-router-dom";
-import { API_URL } from '../../config';
+import { API_URL } from '../../config.ts';
 interface FormErrors {
   title: string;
   year: string;
@@ -393,7 +393,7 @@ function CreateBlog(){
             {<span className="error">{errors.content}</span>}
             <div id="submitBtns">
                 {oldBlog? <button  type="button" id="delete" onClick={deleteArticle}>Löschen</button>:""}
-                <button id="upload" type="submit">{oldBlog? "Updaten" : "Veröffentlichen"}</button>
+                <button style={{color:'inherit'}} id="upload" type="submit">{oldBlog? "Updaten" : "Veröffentlichen"}</button>
             </div>
             </form>
         </div>

@@ -8,11 +8,11 @@ function ProjektBox(){
     return(
         <Box id={"projekt-box"}>
             <div className="projekt-banner"> 
-                 <h2>Unsere Projekte</h2>
+                 <h2 id="banner-title">Unsere Projekte</h2>
             </div>
             <div className="projekt-text" >
                 <p  >Schau dir jetzt die spannenden Projekte an, alle von Schülerinnen des BGT's umgesetzt! Von Kurzfilmen über Spielefilme bis zu Geldautomaten ist alles dabei.</p>
-                <Link to="/projekte">
+                <Link style={{ display: "block", width: "fit-content", marginLeft: "auto", marginRight: "auto" }} to="/projekte">
                 <ActionBtn id="projekt-btn" color="#4df444" >Projekte ansehen</ActionBtn>
                 </Link>
             </div>
