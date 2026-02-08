@@ -276,7 +276,7 @@ function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
             </div>
             <div className="createBtns">
                 
-                <button type="button" onClick={() => addBlock("heading")}>Header</button>
+                <button type="button"  onClick={() => addBlock("heading")}>Header</button>
                 <button type="button" onClick={() => addBlock("paragraph")}>Paragraph</button>
                 <button type="button" onClick={() => addBlock("image")}>Bild</button>
             </div>

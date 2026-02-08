@@ -65,7 +65,10 @@ function Dashboard(){
                 setUser([]);
             }
             else{
-               {setLogedIn(data.accept); 
+               {
+                console.log("data")
+                console.log(data)
+                setLogedIn(data.accept); 
                 setUser(data.result);
 
                }

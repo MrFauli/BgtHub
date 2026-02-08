@@ -18,7 +18,7 @@ app.use(  cors({
     origin: true, // dein React-Frontend
     credentials: true, // <--- wichtig!
   })); // sehr wichtig für lokale Entwicklung
-
+const API_URL = process.env.NODE_ENV === 'production' ? '/api' : '';
 
 app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -701,7 +701,7 @@ if(error){
     console.log(result.rows[0].author_email);
     console.log( admin.rows[0].admin_rechte);
     if(result.rows[0].author_email != req.session.passport.user  && !admin.rows[0].admin_rechte){
-      return res.redirect('/user/articles');
+      return res.redirect(`${API_URL}/user/articles`);
     }
     console.log("durch");
     pool.query(`UPDATE posts 
@@ -713,7 +713,7 @@ if(error){
                   }
                   console.log(result2.rows[0]);
                   console.log("Changed");
-                  res.redirect('/user/articles');
+                  res.redirect(`${API_URL}/user/articles`);
                 })
   })})
 
