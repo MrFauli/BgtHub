@@ -1,7 +1,7 @@
 import Box from "../box/box";
 import './register.css';
 import { useState,useRef,useEffect } from 'react';
-import { API_URL } from "../../config";
+import { API_URL } from '../../config.ts';
 import { Link,useNavigate } from 'react-router-dom';
 interface FormErrors {
   status:string;
@@ -282,9 +282,9 @@ const  validatePassword =(password: string)=> {
             {step == "email" ?  <form onSubmit={checkRegister}>
                 <label  htmlFor='status' className="statusLabel">Status: {status}</label>
                 <div className="statusBox">
-                  <button type="button" className={status == "Schüler" ? "selectedStatus" : ""} onClick={()=>setStatus("Schüler")}><img className="statusIcon" src='../../public/assets/student.png'/></button>
-                  <button type="button" className={status == "Lehrer" ? "selectedStatus" : ""} onClick={()=>setStatus("Lehrer")}><img className="statusIcon" style={{paddingTop:"4px"}} src='../../public/assets/teacher.png'/></button>
-                  <button type="button" className={status == "Alumni" ? "selectedStatus" : ""} onClick={()=>setStatus("Alumni")}><img className="statusIcon" src='../../public/assets/alumni.png'/></button>
+                  <button type="button" className={status == "Schüler" ? "selectedStatus" : ""} onClick={()=>setStatus("Schüler")}><img className="statusIcon" src='/assets/student.png'/></button>
+                  <button type="button" className={status == "Lehrer" ? "selectedStatus" : ""} onClick={()=>setStatus("Lehrer")}><img className="statusIcon" style={{paddingTop:"4px"}} src='/assets/teacher.png'/></button>
+                  <button type="button" className={status == "Alumni" ? "selectedStatus" : ""} onClick={()=>setStatus("Alumni")}><img className="statusIcon" src='/assets/alumni.png'/></button>
                 </div>
                 {<span>{registerError.status}</span>}
                 <label htmlFor='mail' className='mailLabel' >Email</label>

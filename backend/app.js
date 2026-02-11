@@ -19,7 +19,10 @@ app.use(  cors({
     credentials: true, // <--- wichtig!
   })); // sehr wichtig für lokale Entwicklung
 const API_URL = process.env.NODE_ENV === 'production' ? '/api' : '';
-
+const UPLOAD_DIR = process.env.NODE_ENV === 'production' 
+    ? '/home/gianluca/BgtHub/external_uploads'  // Absoluter Pfad auf dem Server
+    : path.join(__dirname, '../uploads'); // Lokal wie bisher
+app.use('/uploads', express.static(UPLOAD_DIR));
 app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -141,8 +144,8 @@ const transporter = nodemailer.createTransport({
     pass:  process.env.EMAIL_PASS, // nicht dein normales Passwort!
   },
 });
-// 📁 Absoluter Pfad zum Ordner "frontend/public/assets"
-const assetsPath = path.resolve(__dirname, "../frontend/public/uploads/");
+
+
 
 const { types } = require('pg');
 types.setTypeParser(20, val => parseInt(val, 10));
@@ -156,7 +159,7 @@ const pool = new Pool({
 console.log(`Start:`);
 // 🟡 Speicherort + Dateiname festlegen
 const storage = multer.diskStorage({
-  destination: path.join(assetsPath, ""),
+  destination: path.join(UPLOAD_DIR, ""),
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
   },
