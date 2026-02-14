@@ -30,7 +30,7 @@ function News(){
     },[postsNum]);   
 
     useEffect(()=>{
-        fetch(`${API_URL}/projects`)
+        fetch(`https://unmeteorologic-wilbur-nongalactic.ngrok-free.dev/api/projects`)
             .then(res => res.json())
             .then(data => {
                 setPosts(()=>data.filter((article:postObj) => article.visible == true));

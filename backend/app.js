@@ -14,10 +14,12 @@ const FileStore = require('session-file-store')(session);
 const fs =  require('fs');
 require('dotenv').config()
 app.set('trust proxy', true);
-app.use(  cors({
-    origin: true, // dein React-Frontend
-    credentials: true, // <--- wichtig!
-  })); // sehr wichtig für lokale Entwicklung
+app.use(cors({
+  origin: '*', // Oder deine ngrok-URL
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'] // <--- DAS HINZUFÜGEN
+}));
 const API_URL = process.env.NODE_ENV === 'production' ? '/api' : '';
 const UPLOAD_DIR = process.env.NODE_ENV === 'production' 
     ? '/home/gianluca/BgtHub/external_uploads'  // Absoluter Pfad auf dem Server
@@ -340,7 +342,7 @@ app.put('/projects',ensureAuthenticated,upload.array('files'),async(req,res,next
             console.log("Updated");
 
            oldImages.forEach((imgPath) => {
-            const fullPath = path.join('../frontend/public',imgPath);
+            const fullPath = path.join(UPLOAD_DIR,imgPath);
             console.log(fullPath);
             fs.unlink(fullPath, (err) => {
               if (err) console.warn("❌ Bild konnte nicht gelöscht werden:", imgPath, err.message);
