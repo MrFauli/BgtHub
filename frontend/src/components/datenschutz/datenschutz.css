@@ -1,4 +1,4 @@
-#datenschutz{
+#impressumDatenschutz{
      display: flex;
      flex-direction: column;
     width:80%;
@@ -6,14 +6,21 @@
     margin-left: auto;
     margin-right: auto;
 }
+#datenschutz ul {
+    list-style-position: inside;
+    padding-left: 0; 
+}
+#datenschutz{
+    margin:0;
+}
 @media only screen and (min-width:600px) and (max-width:900px) {
-    #datenschutz{
+    #impressumDatenschutz{
     width: 70%;
     
 }
 }
 @media only screen and (min-width:900px){
-    #datenschutz {
+    #impressumDatenschutz {
         width: 60%;
 
         

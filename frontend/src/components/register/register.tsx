@@ -9,7 +9,7 @@ interface FormErrors {
   name: string;
   grade: string;
   password:string;
-
+  check:string;
 }
 function RegisterSide(){
     const navigate = useNavigate();
@@ -24,7 +24,8 @@ function RegisterSide(){
         email: "",
         name:"",
         grade:"",
-        password:""
+        password:"",
+        check:""
     });
     const [codeError,setCodeError] = useState<string>("");
     const [trys,setTrys] = useState<number>(3);
@@ -36,6 +37,7 @@ function RegisterSide(){
         const regex = status == "Lehrer" ? /^[a-zA-Z0-9._%+-]+@bbs-me\.de$/ :status=="Alumni" ? /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/ :  /^[a-zA-Z0-9._%+-]+@bbs-me\.org$/;
         return regex.test(email);
 }
+    const [nutzungChecked, setNutzungChecked] = useState(false);
     const [existEmail, setExistEmail] = useState();
     const [emailTrigger,setEmailTrigger] = useState(0);
     const checkRegister = (e:React.FormEvent<HTMLFormElement>) =>{
@@ -45,11 +47,18 @@ function RegisterSide(){
         email:"",
         password:"",
         grade:"",
-        name:""});
+        name:"",
+        check:""});
         if(status==""){
           setRegisterError((prev)=>({
                 ...prev,
                 status:`Bitte Auswählen ob Schüler, Lehrer oder Alumni.`
+            }));
+        }
+        if(!nutzungChecked){
+          setRegisterError((prev)=>({
+                ...prev,
+                check:`Bitte Nutzungsbedingungen akzeptieren.`
             }));
         }
         if(!isNameMatchingEmail(name,email) && status == "Schüler"){
@@ -83,17 +92,8 @@ function RegisterSide(){
             .catch(err => console.error("FEHLER:", err));
              
           }
-
-
-            
-            
-            
-            
         }
-        
 
-        
-    
     useEffect(()=>{
       console.log(`Email überprüft: ${existEmail}`)
       
@@ -101,7 +101,7 @@ function RegisterSide(){
 setStep("code");
             fetch(`${API_URL}/user/authcode/${email}`)
             .then(res => res.json())
-            .then(data => {setCode(data), console.log(data)})
+            .then(data => {setCode(data.hash), console.log(data)})
             .catch(err => console.log(err));
         }
         else if(existEmail && email.length >0 && existEmail != "Alumni"){
@@ -116,7 +116,7 @@ setStep("code");
         setStep("code");
             fetch(`${API_URL}/user/authcode/${email}`)
             .then(res => res.json())
-            .then(data => {setCode(data), console.log(data)})
+            .then(data => {setCode(data.hash), console.log(data)})
             .catch(err => console.log(err));
   
             }
@@ -130,8 +130,20 @@ setStep("code");
         e.preventDefault();
         const finalCode = userCode.join("");
         if(finalCode.length === 6){
-  
-            if(finalCode == code && status!="Alumni"){
+            let codeTrue = false;
+            const response = await fetch(`${API_URL}/user/authcode/compare`, {
+            method: "POST",
+            credentials: 'include',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, check: finalCode})
+        });
+
+          codeTrue = await response.json();
+          console.log(code)
+          console.log(finalCode)
+          console.log(codeTrue)
+          if (codeTrue) {
+            if( status!="Alumni"){
                 fetch(`${API_URL}/user/register`,{
                 method:"POST",
                 headers: {
@@ -150,7 +162,7 @@ setStep("code");
                 .catch(err => console.log(err));
                 navigate("/login");
             }
-            else if(finalCode == code && status=="Alumni") {
+            else if( status=="Alumni") {
               fetch(`${API_URL}/user/register`,{
                 method:"PUT",
                 headers: {
@@ -168,7 +180,7 @@ setStep("code");
                 .then(data => console.log(data))
                 .catch(err => console.log(err));
                 navigate("/login");
-            }
+            }}
             else{
                 if(trys-1>0){
                     setCodeError(`Nicht der richtige Code, noch ${trys-1} versuche.`);
@@ -299,6 +311,20 @@ const  validatePassword =(password: string)=> {
                 <label htmlFor='password' className='passwordLabel' >Passwort</label>
                 <input value={password} onChange={(e)=>setPassword(e.target.value)} name='name' type='password'placeholder="••••••••" />
                 {<span>{registerError.password}</span>}
+                <div className="checkbox-container">
+                        <input 
+                          type="checkbox" 
+                          id="privacy-check" 
+                          name="privacy"
+                          checked={nutzungChecked}
+                          onChange={(e) => setNutzungChecked(e.target.checked)}
+                          required 
+                        />
+                    <label htmlFor="privacy-check">
+                    Ich habe die Datenschutzerklärung gelesen.
+                  </label>
+                  </div>
+                {<span>{registerError.check}</span>}
                 <button id='registerBtn' type='submit'>Regristieren</button>
                 <p>Du hast schon ein Account? <Link to='/login' style={{color:'inherit',textDecoration:'underline'}} >Anmelden</Link></p>
             </form>

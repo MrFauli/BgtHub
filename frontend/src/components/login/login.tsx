@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import Box from "../box/box";
 import './login.css';
 import { Link,useNavigate } from 'react-router-dom';
-import { API_URL } from "../../config";
+import { API_URL } from '../../config.ts';
 function LoginSide(){
     
     const navigate = useNavigate();
@@ -97,6 +97,7 @@ function LoginSide(){
                 <label htmlFor='password' className='passwordLabel' >Passwort</label>
                 <input type="password" id="password" placeholder="••••••••" value={password} onChange={(e)=>setPassword(e.target.value)} />
                 {<span>{loginError}</span>}
+                <Link style={{color:"black",textDecoration:"underline"}} to={"/passwort-vergessen"}>Passwort vergessen? Hier klicken</Link>
                 
                 <button id='signInBtn' type='submit'>Einloggen</button>
                 <p>Du hast kein Account? <Link to='/register' style={{color:'inherit',textDecoration:'underline'}} >Registrieren</Link></p>

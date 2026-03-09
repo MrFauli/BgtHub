@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import ActionBtn from "../actionbtn/actionbtn";
 import { type postObj } from "../../types/posts";
 import "./adminPortal.css";
-import { API_URL } from "../../config";
+import { API_URL } from '../../config.ts';
 
 function AdminPortal(){
 
@@ -174,7 +174,19 @@ function AdminPortal(){
             <div id="alumniRow"><input type="email" placeholder="name@email.com" value={alumniMail} onChange={(e)=>setAlumniMail(e.target.value)}/>
             <ActionBtn onClick={inviteAlumni} color="#b4b4b4" id="sendMail" className={successMail?"button-success":""}><img className="icon" src="/assets/send.png"/></ActionBtn></div>
             <span className="error">{alumniError}</span>
-             {articles  && articles.map((article)=>(
+            <h2>Noch nicht freigeschaltet</h2>
+             {articles  && articles.filter(article=> article.visible == false).map((article)=>(
+            <div className="articleBox">
+            <h3>{<Link to={`/projekte/${article.slug}`} >{article.title}</Link>}</h3>
+            
+                
+                <button onClick={()=>changeVisible(article.id)}><img className="icon" src={article.visible ? "/assets/visible.png" : "/assets/notVisible.png"} alt="visible" /></button>
+                <button onClick={()=>deleteArticle(article.id)}><img className="icon" src="/assets/delete.png" alt="delete" /></button>
+            </div>
+
+        ))}
+            <h2>Bereits freigeschaltet</h2>
+             {articles  && articles.filter(article=> article.visible == true).map((article)=>(
             <div className="articleBox">
             <h3>{<Link to={`/projekte/${article.slug}`} >{article.title}</Link>}</h3>
             

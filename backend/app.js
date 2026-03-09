@@ -14,10 +14,17 @@ const FileStore = require('session-file-store')(session);
 const fs =  require('fs');
 require('dotenv').config()
 app.set('trust proxy', true);
+const allowedOrigins = ['http://localhost:3000','http://localhost:5000','http://localhost:5173','https://bbs-me.de', 'https://bbs-me.org','https://unmeteorologic-wilbur-nongalactic.ngrok-free.dev'];
 app.use(cors({
-  origin: '*', // Oder deine ngrok-URL
+origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    return callback(null, true); 
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['GET', 'POST', 'OPTIONS', 'DELETE','PUT'],
   allowedHeaders: ['Content-Type', 'Authorization', 'ngrok-skip-browser-warning'] // <--- DAS HINZUFÜGEN
 }));
 const API_URL = process.env.NODE_ENV === 'production' ? '/api' : '';
@@ -27,25 +34,18 @@ const UPLOAD_DIR = process.env.NODE_ENV === 'production'
 app.use('/uploads', express.static(UPLOAD_DIR));
 app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-app.use(
-
-  session({
-      genid: (req) => {
-    console.log('Inside the session middleware')
-    console.log(req.sessionID)
-    return uuid() // use UUIDs for session IDs
-  },
-
-    secret: process.env.SESSION_SECRET ,
-    resave: false,
-    saveUninitialized: false,
+app.use(session({
+    store: new FileStore({}),
+    secret: process.env.SESSION_SECRET,
+    resave: true, // Bei FileStore wichtig
+    saveUninitialized: true, // Zum Testen auf TRUE setzen, damit JEDER ein Cookie bekommt
     cookie: {
-      secure: false, // true nur bei HTTPS
-      httpOnly: true,
-      sameSite: "lax", // oder "none" falls cross-origin
-    },
-  })
-);
+        secure: false,   // Muss false sein für HTTP localhost
+        httpOnly: true,  // Sicherheit: JS kann das Cookie nicht lesen
+        sameSite: "lax", // "lax" reicht für localhost meist aus
+        maxAge: 1000 * 60 * 60 // 1 Stunde gültig
+    }
+}));
 
 
 const SALT_ROUNDS = 10;
@@ -116,7 +116,7 @@ const alumniInviteEmail = () => {
                         Gehe auf Upload und dann auf Registrieren.
                       </li>
                       <li style="margin-bottom:10px;">
-                        Erstelle dir ein Konto als <>Alumni</  b> (das 3. Symbol) mit dieser E-Mail.
+                        Erstelle dir ein Konto als <b>Alumni</b> (das 3. Symbol) mit dieser E-Mail.
                       </li>
                       <li>
                         Erstelle Posts über deine coolen Projekte!
@@ -528,7 +528,10 @@ app.get('/user/authcode/:email',async(req,res,next)=>{
   });
   
   console.log("✅ Mail gesendet:", info.messageId);
-    res.status(200).send(code);
+  console.log(code.toString())
+ const hashedCode = await bcrypt.hash(code.toString(), SALT_ROUNDS);
+ console.log(hashedCode);
+    res.status(200).json({ hash: hashedCode });
   } catch (error) {
     console.error("❌ Fehler beim Senden der E-Mail:", error);
     res.status(400).send(error.message);
@@ -536,7 +539,42 @@ app.get('/user/authcode/:email',async(req,res,next)=>{
 
 
 });
+app.post('/user/authcode/compare', async (req, res) => {
+  console.log("1. COMPARE - ID:", req.sessionID);
+console.log("1. COMPARE - Cookie Header:", req.headers.cookie);
+  const { code, check, email } = req.body; 
+    console.log(check.toString());
+  console.log("Eingegebener Code:", code);
+    console.log("Erhaltene E-Mail:", email);
+    console.log(await bcrypt.hash(check.toString(), SALT_ROUNDS));
+    try {
+        const codeCorrect = await bcrypt.compare( check,code.toString(),);
 
+        if (codeCorrect) {
+        if (email) {
+        req.session.canResetPasswordFor = email;
+        
+
+return req.session.save((err) => {
+        if (err) {
+            console.error("Speicherfehler:", err);
+            return res.status(500).send(false);
+        }
+        console.log("Session gespeichert für:", req.session.canResetPasswordFor);
+        res.status(200).json(true); 
+    })
+    } else {
+      return res.status(200).send(true);
+    }
+
+        } else {
+            return res.status(200).send(false);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send();
+    }
+});
 app.post('/user/login/',(req,res,next) =>{passport.authenticate("local",(err,user,info)=>{
 
   console.log(req.sessionID)
@@ -579,6 +617,33 @@ app.post('/user/register/',async(req,res,next)=>{
               res.status(201).send();
             })}
 });
+
+app.put('/user/reset-password', async (req, res) => {
+  console.log("2. RESET - ID:", req.sessionID);
+console.log("2. RESET - Cookie Header:", req.headers.cookie);
+    const { newPassword } = req.body;
+    const email = req.session.canResetPasswordFor; 
+
+    console.log("Email aus Session:", email);
+
+    if (!email) { 
+        return res.status(403).json({ message: "Nicht autorisiert." });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+    
+    pool.query(
+        `UPDATE authors SET password = $1 WHERE email = $2;`,
+        [hashedPassword, email],
+        (error, result) => {
+            if (error) return res.status(400).send();
+            
+
+            delete req.session.canResetPasswordFor;
+            res.status(201).send("Passwort geändert");
+        }
+    );
+});
 app.post('/user/invite/:email',ensureAuthenticated,(req,res,next)=>{
   const mail = req.params.email;
   pool.query('SELECT admin_rechte FROM authors WHERE email = $1;',[req.session.passport.user],(error,status)=>{
@@ -613,7 +678,7 @@ Folgendes musst du tun:
 1. Gehe auf bgt-hub.me (verlinke zu der domain)
 2. Gehe auf Upload und dann auf Regristrieren
 3. Erstelle dir ein Konto als Alumni(das 3 Symbol) mit dieser E-Mail
-4. Erstelle Posts über deine coolen Projekte!
+4. Erstelle Posts über deine damaligen Projekte!
 
 Bei Fragen meld dich gerne!
 
@@ -632,7 +697,20 @@ dein BGT-Hub Team`,
               })      }
   })
 })
+app.put("/user/change",async(req,res,next)=>{
+   const body = req.body;
+    pool.query(`UPDATE authors
+              SET name = $1,  status = $2, grade = $3
+              WHERE email = $4;`,[body.name,body.status,body.grade,body.email],(error,result)=>{
+              if(error){
+                res.status(400).send();
+                throw error;
+              }
+              res.status(201).send();
+            })
+})
 app.put('/user/register/',async(req,res,next)=>{
+
   const body = req.body;
   console.log(body);
  const hash = await bcrypt.hash(body.password, SALT_ROUNDS);
@@ -668,6 +746,7 @@ app.get('/user/articles',ensureAuthenticated,(req,res,next)=>{
         res.status(400).send();
       throw error;}
       res.status(200).json({result: result.rows,accept:true,admin_rechte: results.rows[0].admin_rechte});
+      console.log("result");
       console.log(results.rows);
       
     })
@@ -705,7 +784,7 @@ if(error){
     console.log("article:");
     console.log(result.rows[0].author_email);
     console.log( admin.rows[0].admin_rechte);
-    if(result.rows[0].author_email != req.session.passport.user  && !admin.rows[0].admin_rechte){
+    if(!admin.rows[0].admin_rechte){
       return res.redirect(`${API_URL}/user/articles`);
     }
     console.log("durch");

@@ -88,7 +88,24 @@ function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
     newBlocks[index] = updated;
     setBlocks(newBlocks);
     console.log(index);
+    blocks.map(()=>{
+        setError((e)=>[...e,""]);
+    })
+  const limit = 10 * 1024 * 1024;
+  if(newBlocks[index].type){
+         const isImageLimitReached = newBlocks.filter(b => b.type === "image").length > 6;
+        if(isImageLimitReached){
+            const errorMessage = "Maximal 6 Bilder erlaubt, Bild bitte wieder löschen!";
+        
+           
+            setError((e)=>[...e.slice(0,index),errorMessage,...e.slice(index+1)]);
+            // Setze das Input-Feld zurück und stoppe die Verarbeitung
+            e.target.value = ''; 
+            return; 
+        }
+  }
     if(newBlocks[index].type == "image" && file){
+   
         if (!file.type.startsWith('image/')) {
        
             const errorMessage = "Bild muss .jpg, .png, .wepq oder .gif sein!"
@@ -96,6 +113,13 @@ function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
            
             setError((e)=>[...e.slice(0,index),errorMessage,...e.slice(index+1)]);
             // Setze das Input-Feld zurück und stoppe die Verarbeitung
+            e.target.value = ''; 
+            return; 
+        }
+        else if(file.size > limit){
+            const errorMessage = "Bild darf maximal 10Mb groß sein!"
+            
+            setError((e)=>[...e.slice(0,index),errorMessage,...e.slice(index+1)]);
             e.target.value = ''; 
             return; 
         }
@@ -145,8 +169,15 @@ function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
                          console.log(block.text);
                         break;
                     case "image":
-                        if(error[i]=="Bild muss .jpg, .png, .wepq oder .gif sein!"){
+                        const isImageLimitReached = blocks.filter(b => b.type === "image").length > 6;
+                        if(isImageLimitReached){
+                            errorMessage = "Maximal 6 Bilder erlaubt, bitte eines löschen!";
+                        }
+                        else if(error[i]=="Bild muss .jpg, .png, .wepq oder .gif sein!"){
                             errorMessage = "Bild muss .jpg, .png, .wepq oder .gif sein!";
+                        }
+                        else if(error[i] == "Bild darf maximal 10Mb groß sein!"){
+                            errorMessage = "Bild darf maximal 10Mb groß sein!";
                         }
                         else{
                         errorMessage = block.src == "" ? "Bild muss hochgeladen sein" : "";}

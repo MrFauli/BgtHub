@@ -10,7 +10,9 @@ function Sitemap(){
             <ul>
                 <li> <a  href="mailto:gianlucarossi666@yahoo.com">Kontakt</a></li>
                 <li><a target="_blank" href="https://bbs-me.de">BBS-ME</a></li>
-                <li><Link to={"/impressum"}>Impressum</Link></li>
+                <li><Link to={"/impressum-datenschutz"}>Impressum & Datenschutz</Link></li>
+
+                <li><Link to={"/nutzungsbedingungen"}>Nutzungsbedingungen</Link></li>
             </ul>
         </div>
     )

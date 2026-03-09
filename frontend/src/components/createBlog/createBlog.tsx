@@ -180,7 +180,7 @@ function CreateBlog(){
             newBlog.tag = tags;
             newBlog.id = oldBlog ? oldBlog.id : 0;
             newBlog.coverImage = cover != null ?cover.name : "";
-            newBlog.visible = true;
+            newBlog.visible = false;
             let fileContent = null;
             const result  = blockRef.current?.getContent();
             if (result && typeof result !== "boolean") {
@@ -289,6 +289,7 @@ function CreateBlog(){
         //          grade: "Die Jahrgangsstufe während des Projektes."
         //     }))
         // }
+          const limit = 10 * 1024 * 1024;
         if(tags.length == 0){
             setErrors((prev) => ({
                 ...prev,
@@ -317,6 +318,13 @@ function CreateBlog(){
             setErrors((prev) => ({
                 ...prev,
                  coverImage: "Bild muss .jpg, .png, .wepq oder .gif sein!"
+            }))
+            setCover(null);
+        }
+        else if(cover.size > limit ){
+                        setErrors((prev) => ({
+                ...prev,
+                 coverImage: "Bild darf nicht größer als 10Mb sein!"
             }))
             setCover(null);
         }

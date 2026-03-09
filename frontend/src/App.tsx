@@ -11,7 +11,11 @@ import LoginSide from './components/login/login';
 import RegisterSide from './components/register/register';
 import Dashboard from './components/dashboard/dashboard';
 import AdminPortal from './components/adminPortal/adminPortal';
-import Impressum from './components/impressum/impressum';
+
+import Nutzung from './components/nutzung/nutzung';
+import Datenschutz from './components/datenschutz/datenschutz';
+import ResetPassword from './components/passwort-vergessen/passwort-vergessen';
+import EditProfile from './components/editProfile/editProfile';
 
 
 
@@ -31,7 +35,10 @@ const router = createBrowserRouter(createRoutesFromElements(
      <Route path="/dashboard/edit/:article" element={<CreateBlog/>}/>
      <Route path="/dashboard" element={<Dashboard/>}/>
      <Route path="/admin" element={<AdminPortal></AdminPortal>}/>
-     <Route path="/impressum" element={<Impressum></Impressum>}/>
+     <Route path="/impressum-datenschutz" element={<Datenschutz></Datenschutz>}/>
+     <Route path="/nutzungsbedingungen" element={<Nutzung></Nutzung>}/>
+     <Route path="/passwort-vergessen" element={<ResetPassword></ResetPassword>}/>
+     <Route path="/edit-profile" element={<EditProfile></EditProfile>}/>
   </Route>
 
 ));

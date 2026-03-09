@@ -1,0 +1,57 @@
+.area{
+  display: flex;
+  justify-content: center; /* horizontal zentrieren */
+  align-items: center;    /* vertikal zentrieren */
+  min-height: 0vh;      /* volle Höhe */
+  margin: 0;
+}
+
+#signBox {
+  max-width: 800px;
+  width: 100%;
+}
+#signBox{
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    flex:1;
+}
+
+input {
+  width: 100%;
+  height: 3rem;
+  padding: 12px 15px;
+  border: 2px solid black;
+  background-color: inherit;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s;
+  color:inherit;
+}
+input:focus {
+  box-shadow: 4px 4px 0px black;
+}
+label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+    text-align: left;
+}
+form.editProfileForm button{
+
+      width: 100%;
+  padding: 12px;
+  background-color: #adbf00;
+ 
+  border: 2px solid black;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s;
+}
+form span .error{
+  margin-top: 8px;
+  color:red;
+  font-size: small;
+}

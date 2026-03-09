@@ -11,17 +11,21 @@ function Dashboard(){
     const [logedIn,setLogedIn] = useState<boolean>();
     const [getUser,setGetUser] = useState<number>(0);
     useEffect(()=>{
+            console.log("moin")
             fetch(`${API_URL}/user/articles`, {
             method: "GET",
             credentials: "include" // wichtig für Cookies
             })
             .then(res => res.json())
             .then(data => {
+                console.log(data)
             if(!data){
+                console.log("moin")
                 setUser([]);
             }
             else{
-               {setLogedIn(data.accept); 
+               {console.log(data.accept)
+                setLogedIn(data.accept); 
                 setUser(data.result);
                 setAdmin(data.admin_rechte);
                 console.log("admin:"+data.admin_rechte)
@@ -45,6 +49,7 @@ function Dashboard(){
             console.log("Welcome");
         }
         else{
+            console.log("moin du da")
             navigate("/login");
         }}
     },[getUser])
@@ -92,19 +97,33 @@ function Dashboard(){
           <>
           {logedIn &&
             <div id="dashboard">
-                <div id="btns">
-            <ActionBtn onClick={logout} id="logout" color="red"><img className="icon" src="/assets/logout.png"/></ActionBtn>   
-            {admin &&<ActionBtn onClick={()=>navigate("/admin")} id="admin" color="green"><img className="icon" src="/assets/admin.png"/></ActionBtn>}
+            <div id="btns">
+                <div style={{display:"flex", gap:"1.5rem"}}>
+                    <ActionBtn onClick={()=>navigate("/edit-profile")} id="editProfile" color="#003554"><img className="icon" src="/assets/user-avatar.png"/></ActionBtn>
+                    <ActionBtn onClick={logout} id="logout" color="red"><img className="icon" src="/assets/logout.png"/></ActionBtn>
+                </div>
+                {admin &&<ActionBtn onClick={()=>navigate("/admin")} id="admin" color="green"><img className="icon" src="/assets/admin.png"/></ActionBtn>}
          </div> 
 
         <h1>Deine Projekte</h1>
-        
-        {user  && user.map((article)=>(
+        {user.filter(article=> article.visible == false).length > 0 && <h2>Noch nicht freigeschaltet</h2>}
+        {user.length  && user.filter(article=> article.visible == false).map((article)=>(
             <div className="articleBox">
             <h3>{<Link to={`/projekte/${article.slug}`} >{article.title}</Link>}</h3>
             
                 <Link to={`/dashboard/edit/${article.slug}`}><button ><img className="icon" src="/assets/edit.png" alt="edit" /></button></Link>
-                <button onClick={()=>changeVisible(article.id)}><img className="icon" src={article.visible ? "/assets/visible.png" : "/assets/notVisible.png"} alt="visible" /></button>
+                {/* <button onClick={()=>changeVisible(article.id)}><img className="icon" src={article.visible ? "/assets/visible.png" : "/assets/notVisible.png"} alt="visible" /></button> */}
+            
+            </div>
+
+        ))}
+        {user.filter(article=> article.visible == true).length > 0 &&<h2>Bereits freigeschaltet</h2>}
+        {user  && user.filter(article=> article.visible == true).map((article)=>(
+            <div className="articleBox">
+            <h3>{<Link to={`/projekte/${article.slug}`} >{article.title}</Link>}</h3>
+            
+                <Link to={`/dashboard/edit/${article.slug}`}><button ><img className="icon" src="/assets/edit.png" alt="edit" /></button></Link>
+                {/* <button onClick={()=>changeVisible(article.id)}><img className="icon" src={article.visible ? "/assets/visible.png" : "/assets/notVisible.png"} alt="visible" /></button> */}
             
             </div>
 
