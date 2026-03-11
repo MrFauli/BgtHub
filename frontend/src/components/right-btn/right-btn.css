@@ -23,6 +23,10 @@
     background-color: white;
 
 }
+:root[data-theme='light'] {
+    .line{
+        background-color: black;
+    }}
 .line.right-top{
     transform: rotate(25deg);
     margin-left: 6px;

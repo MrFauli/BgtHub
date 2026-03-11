@@ -2,7 +2,7 @@ import {useEffect,useState} from "react";
 import type {postObj} from '../../types/posts';
 import type {ContentBlock} from '../../types/content';
 import { Link,useParams,useNavigate } from "react-router-dom";
-import { API_URL } from "../../config";
+import { API_URL } from '../../config.ts';
 import Tag from "../tag/tag";
 import './article.css';
 import BackBtn from "../backBtn/backBtn";
@@ -76,9 +76,18 @@ function Article(){
     return(
         <>
          {posts.length>0 ?
+
         <div id="blog" style={{position:'relative', paddingTop:'40px'}}>
                      <BackBtn onClick={goBack}/>
         <section className="about" >
+{!post?.visible && (
+  <div className="warning-box">
+    <p style={{margin:0}}>
+      <strong>Hinweis:</strong> Dieser Artikel ist noch nicht freigeschaltet. 
+      Keine Haftung für den Inhalt durch die Schule.
+    </p>
+  </div>
+)}
             <img className="cover" src={post?.coverImage}/>
 
             <div className="data">

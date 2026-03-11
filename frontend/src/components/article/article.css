@@ -87,3 +87,21 @@ section{
   height: 340px;
 }
 }
+.warning-box {
+  /* Leichtes Neon-Rot als Hintergrund */
+  background-color: rgba(255, 0, 0, 0.08); 
+  /* Kräftige rote Border */
+  border: 2px solid #ff0000;
+  margin:0;
+  padding: 12px 16px;
+  margin: 15px 0;
+  border-radius: 4px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  /* Kleiner Glow-Effekt für den Neon-Vibe */
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+

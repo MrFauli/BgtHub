@@ -2,7 +2,7 @@ import Box from "../box/box";
 import './passwort-vergessen.css';
 import { useState,useRef,useEffect } from 'react';
 import { API_URL } from '../../config.ts';
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 interface FormErrors {
         mail:string,
         password:string,

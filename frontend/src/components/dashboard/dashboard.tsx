@@ -53,35 +53,35 @@ function Dashboard(){
             navigate("/login");
         }}
     },[getUser])
-    const changeVisible = (id:number)=>{
-        console.log(id);
-            fetch(`${API_URL}/user/articles/togglevisible`,{
-                method:"POST",
-                credentials: "include", // wichtig für Cookies
-                headers: {
-                    "Content-Type": "application/json", 
-                },
-                body:JSON.stringify({
-                    id: id
-                })})
-            .then(res => res.json())
-            .then(data => {
-            if(!data){
-                setUser([]);
-            }
-            else{
-               {
-                console.log("data")
-                console.log(data)
-                setLogedIn(data.accept); 
-                setUser(data.result);
+    // const changeVisible = (id:number)=>{
+    //     console.log(id);
+    //         fetch(`${API_URL}/user/articles/togglevisible`,{
+    //             method:"POST",
+    //             credentials: "include", // wichtig für Cookies
+    //             headers: {
+    //                 "Content-Type": "application/json", 
+    //             },
+    //             body:JSON.stringify({
+    //                 id: id
+    //             })})
+    //         .then(res => res.json())
+    //         .then(data => {
+    //         if(!data){
+    //             setUser([]);
+    //         }
+    //         else{
+    //            {
+    //             console.log("data")
+    //             console.log(data)
+    //             setLogedIn(data.accept); 
+    //             setUser(data.result);
 
-               }
-            }
-                setGetUser(prev=>prev+1);
-            })
-            .catch(err => console.log(err));
-    }
+    //            }
+    //         }
+    //             setGetUser(prev=>prev+1);
+    //         })
+    //         .catch(err => console.log(err));
+    // }
     const logout = () =>{
         fetch(`${API_URL}/user/logout/`,{
                 method:"GET",

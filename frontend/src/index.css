@@ -86,7 +86,7 @@ button:focus-visible {
   --text-color:#000000;
   body{
     color: var(--text-color);
-    background-color: #7b7b7b;
+    background-color: #b4b4b4;
   }
   a:hover {
     /* color: #747bff; */

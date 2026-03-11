@@ -65,7 +65,7 @@ function RegisterSide(){
               setRegisterError((prev)=>({
                 ...prev,
                 name:`Bitte echten Namen aus der Email verwenden.\n
-                        Fehler/Ausnahmen? Email an info@bgt-hub.me!`
+                        Fehler? Email an info@bgt-hub.me!`
             }));}
             if(grade != 11 && grade != 12 && grade != 13){
                  setRegisterError((prev)=>({
@@ -226,23 +226,40 @@ const extractEmailParts = (email: string)=> {
   return { first: first + maybeSecond, last };
 }
 
-/**
- * Überprüft, ob der angegebene Name zur bbs-me.org E-Mail passt.
- */
-const isNameMatchingEmail =(nameInput: string, email: string)=> {
-  const emailParts = extractEmailParts(email);
-  if (!emailParts) return false;
+const checkEmailType = (email: string): 'OLD' | 'NEW' | 'INVALID' => {
+  if (/^[a-z]+\.[a-z]+@/i.test(email)) return 'OLD'; // vorname.nachname
+  if (/^\d+\.[a-z]\.[a-z]@/i.test(email)) return 'NEW'; // 12345.v.n
+  return 'INVALID';
+};
 
-  const names = normalizeName(nameInput);
-  const { first, last } = emailParts;
+const isNameMatchingEmail = (nameInput: string, email: string): boolean => {
+  const type = checkEmailType(email);
+  const names = normalizeName(nameInput); // Deine bestehende Funktion [cite: 3, 4]
 
-  const firstOk =
-    names.some(n => first.startsWith(n) || n.startsWith(first));
-  const lastOk =
-    names.some(n => last.startsWith(n) || n.startsWith(last));
+  if (type === 'OLD') {
+    // Deine bestehende Logik für das alte System
+    const emailParts = extractEmailParts(email);
+    if (!emailParts) return false;
+    const { first, last } = emailParts;
+    return names.some(n => first.includes(n)) && names.some(n => last.includes(n));
+  }
 
-  return firstOk && lastOk;
-}
+  if (type === 'NEW') {
+    // Beim neuen System können wir nur die Initialen prüfen
+    const match = email.match(/^\d+\.([a-z])\.([a-z])@/i);
+    if (!match) return false;
+    
+    const [ , firstInitial, lastInitial] = match;
+    const firstOk = names[0]?.startsWith(firstInitial.toLowerCase());
+    const lastOk = names[names.length - 1]?.startsWith(lastInitial.toLowerCase());
+    
+    // ACHTUNG: Das ist schwach. Hier sollte zusätzlich gegen eine 
+    // Datenbank (CSV-Import der Schule) geprüft werden!
+    return firstOk && lastOk;
+  }
+
+  return false;
+};
 const  validatePassword =(password: string)=> {
   
 
