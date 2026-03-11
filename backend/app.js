@@ -184,14 +184,14 @@ app.use((req, res, next) => {
 
 passport.serializeUser((user, done) => {
   console.log("Hat geklappt: ");
-  console.log(user.email);
+  console.log(user.author_id);
 
-  done(null, user.email);
+  done(null, user.author_id);
   
 });
-passport.deserializeUser((email,done)=>{
+passport.deserializeUser((author_id,done)=>{
   pool.query(`SELECT * FROM authors
-                WHERE email = $1;`,[email],(error,result)=>{
+                WHERE author_id = $1;`,[author_id],(error,result)=>{
                   if(error) return done(error);
                   console.log(result.rows[0]);
                   done(null,result.rows[0]);
@@ -212,9 +212,9 @@ passport.use(new LocalStrategy( {
       usernameField: "email", // sagt Passport, nimm req.body.email
       passwordField: "password", // sagt Passport, nimm req.body.password
     },
-  function(email, password, done) {
+  function(author_id, password, done) {
      pool.query(`SELECT * FROM authors
-              WHERE email = $1;`,[email],async(error,result)=>{
+              WHERE email = $1;`,[author_id],async(error,result)=>{
                 if(error){
                   return done(err);
                 }
@@ -242,7 +242,7 @@ const getProjects = (req,res,next) =>{
     p.cover_img AS "coverImage", p.content AS content, p.visible AS visible
     FROM posts p
     LEFT JOIN posts_authors pa ON pa.blog_id = p.id
-    LEFT JOIN authors a ON a.email = pa.author_email
+    LEFT JOIN authors a ON a.author_id = pa.author_id
     ORDER BY id ASC;`,(error,results)=>{
     if(error){
       
@@ -261,8 +261,8 @@ app.post('/projects',ensureAuthenticated,upload.array('files'),async(req,res,nex
   console.log(newBlog.content);
   newBlog.coverImage = '/uploads/'+req.files[0]?.filename;
   console.log(req.file);
-  const email = req.session.passport.user;
-  console.log(email);
+  const author_id = req.session.passport.user;
+  console.log(author_id);
   let index = 1;
   newBlog.content.map((el)=>{
     if(el.type == "image"){
@@ -284,9 +284,9 @@ app.post('/projects',ensureAuthenticated,upload.array('files'),async(req,res,nex
       
       blogResult = results.rows[0];
       console.log(blogResult);
-      pool.query(`INSERT INTO posts_authors(blog_id,author_email)
+      pool.query(`INSERT INTO posts_authors(blog_id,author_id)
       VALUES ($1,$2) RETURNING *`,
-      [blogResult.id,email],(error,results)=>{
+      [blogResult.id,author_id],(error,results)=>{
         if(error){
            res.status(400).send();
             throw error;
@@ -309,8 +309,8 @@ app.put('/projects',ensureAuthenticated,upload.array('files'),async(req,res,next
   console.log(newBlog.content);
   newBlog.coverImage = '/uploads/'+req.files[0]?.filename;
   console.log(req.file);
-  const email = req.session.passport.user;
-  console.log(email);
+  const author_id = req.session.passport.user;
+  console.log(author_id);
   let index = 1;
   newBlog.content.map((el)=>{
     if(el.type == "image"){
@@ -354,21 +354,21 @@ app.put('/projects',ensureAuthenticated,upload.array('files'),async(req,res,next
 })
 app.delete('/projects/:id',ensureAuthenticated,(req,res,next)=>{
   const id = req.params.id;
-  const email = req.session.passport.user;
-  pool.query(`SELECT author_email FROM posts_authors
+  const author_id = req.session.passport.user;
+  pool.query(`SELECT author_id FROM posts_authors
               WHERE blog_id = $1;`,[id],(err,result)=>{
                  if(err){
            res.status(400).send();
             throw error;
 
         }       
-        pool.query('SELECT admin_rechte FROM authors WHERE email = $1;',[req.session.passport.user],(error,admin)=>{
+        pool.query('SELECT admin_rechte FROM authors WHERE author_id = $1;',[req.session.passport.user],(error,admin)=>{
       if(error){
       res.status(400).send();
       throw err;
       }
-      let author_email = result.rows[0];
-                if(author_email.author_email != email && !admin.rows[0].admin_rechte){
+      let author = result.rows[0];
+                if(author.author_id != author_id && !admin.rows[0].admin_rechte){
                   return res.status(400).send(false);
                 }
                 console.log(id);
@@ -401,7 +401,7 @@ app.get('/projects/tag/',(req,res,next)=>{
     p.cover_img AS "coverImage", p.content AS content,p.visible AS visible
     FROM posts p
     LEFT JOIN posts_authors pa ON pa.blog_id = p.id
-    LEFT JOIN authors a ON a.email = pa.author_email
+    LEFT JOIN authors a ON a.author_id = pa.author_id
     WHERE $1 = ANY(p.tag)
     ORDER BY id ASC;`,[filterTag],(error,results)=>{
     if(error){
@@ -427,7 +427,7 @@ app.get('/projects/author/:author',(req,res,next)=>{
     p.cover_img AS "coverImage", p.content AS content,p.visible AS visible
     FROM posts p
     LEFT JOIN posts_authors pa ON pa.blog_id = p.id
-    LEFT JOIN authors a ON a.email = pa.author_email
+    LEFT JOIN authors a ON a.author_id = pa.author_id
     WHERE $1 = a.name
     ORDER BY id ASC;`,[author],(error,results)=>{
     if(error){
@@ -461,7 +461,7 @@ app.get('/user/article/:slug',ensureAuthenticated,(req,res,next)=>{
     p.cover_img AS "coverImage", p.content AS content, p.visible AS visible
     FROM posts p
     LEFT JOIN posts_authors pa ON pa.blog_id = p.id
-    LEFT JOIN authors a ON a.email = pa.author_email
+    LEFT JOIN authors a ON a.author_id = pa.author_id
     WHERE p.slug = $1
     ORDER BY id ASC;`,[slug],(error,results)=>{
     if(error){
@@ -475,7 +475,7 @@ app.get('/user/article/:slug',ensureAuthenticated,(req,res,next)=>{
       return res.status(400).send(false);
     }
     console.log(blog);
-    pool.query('SELECT author_email FROM posts_authors WHERE blog_id = $1;',[blog.id],(err,result)=>{
+    pool.query('SELECT author_id FROM posts_authors WHERE blog_id = $1;',[blog.id],(err,result)=>{
     if(err){
       res.status(400).send();
       throw err;
@@ -483,7 +483,7 @@ app.get('/user/article/:slug',ensureAuthenticated,(req,res,next)=>{
     console.log("article:");
     console.log(blog);
     console.log(result.rows[0]);
-    if(result.rows[0].author_email != req.session.passport.user){
+    if(result.rows[0].author_id != req.session.passport.user){
       return res.status(401).send();
     }
     res.status(200).send(blog)
@@ -699,9 +699,10 @@ dein BGT-Hub Team`,
 })
 app.put("/user/change",async(req,res,next)=>{
    const body = req.body;
+  const author_id = req.session.passport.user;
     pool.query(`UPDATE authors
-              SET name = $1,  status = $2, grade = $3
-              WHERE email = $4;`,[body.name,body.status,body.grade,body.email],(error,result)=>{
+              SET name = $1,  status = $2, grade = $3, email = $4
+              WHERE author_id = $5;`,[body.name,body.status,body.grade,body.email,author_id],(error,result)=>{
               if(error){
                 res.status(400).send();
                 throw error;
@@ -726,22 +727,22 @@ app.put('/user/register/',async(req,res,next)=>{
             })}
           );
 app.get('/user/articles',ensureAuthenticated,(req,res,next)=>{
-  const userEmail  = req.session.passport.user;
+  const author_id  = req.session.passport.user;
    pool.query(
     `SELECT p.id AS id, p.title AS title, p.slug AS slug, p.date AS date, 
     a.grade AS grade, a.name AS author, p.tag AS tag, p.summary AS summary, 
     p.cover_img AS "coverImage", p.content AS content,p.visible AS visible
     FROM posts p
     LEFT JOIN posts_authors pa ON pa.blog_id = p.id
-    LEFT JOIN authors a ON a.email = pa.author_email
-    WHERE $1 = a.email
-    ORDER BY id ASC;`,[userEmail],(error,result)=>{
+    LEFT JOIN authors a ON a.author_id = pa.author_id
+    WHERE $1 = a.author_id
+    ORDER BY id ASC;`,[author_id],(error,result)=>{
     if(error){
       
       res.status(400).send();
       throw error;
     }
-    pool.query('SELECT admin_rechte FROM authors WHERE email = $1',[userEmail],(error,results)=>{
+    pool.query('SELECT admin_rechte FROM authors WHERE author_id = $1',[author_id],(error,results)=>{
       if(error){
         res.status(400).send();
       throw error;}
@@ -754,8 +755,8 @@ app.get('/user/articles',ensureAuthenticated,(req,res,next)=>{
   });
 });
 app.get('/user/data',ensureAuthenticated,(req,res,next)=>{
-  const userEmail = req.session.passport.user;
-  pool.query('SELECT * FROM authors WHERE email = $1',[userEmail],(error,result)=>{
+  const author_id = req.session.passport.user;
+  pool.query('SELECT * FROM authors WHERE author_id = $1',[author_id],(error,result)=>{
     if(error){
       res.status(400).send();
       throw error;
@@ -770,12 +771,12 @@ app.get('/user/logedin',ensureAuthenticated,(req,res,next)=>{
 app.post('/user/articles/togglevisible',ensureAuthenticated,(req,res,next)=>{
   
   const id = req.body.id;
-  pool.query('SELECT author_email FROM posts_authors WHERE blog_id = $1;',[id],(err,result)=>{
+  pool.query('SELECT author_id FROM posts_authors WHERE blog_id = $1;',[id],(err,result)=>{
     if(err){
       res.status(400).send();
       throw err;
     }
-    pool.query('SELECT admin_rechte FROM authors WHERE email = $1;',[req.session.passport.user],(error,admin)=>{
+    pool.query('SELECT admin_rechte FROM authors WHERE author_id = $1;',[req.session.passport.user],(error,admin)=>{
 if(error){
       res.status(400).send();
       throw err;
