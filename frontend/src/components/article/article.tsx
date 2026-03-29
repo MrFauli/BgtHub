@@ -71,8 +71,25 @@ function Article(){
                 else{
                     return <h5>{content.text}</h5>
                 }
-        }
-    }
+            case "link":
+                return (<div className="linkBlock"><a className="blog-external-link" href={content.url} target="_blank"><span className="link-icon">🔗</span>{content.label}</a>
+                        </div>
+                )
+            case "youtube":
+            if (!content.videoId) return null;
+            const embedUrl = `https://www.youtube.com/embed/${content.videoId}`;
+            return (
+                <div className="youtubeVideo">
+                    <iframe
+                    src={embedUrl}
+                    title="YouTube Video Player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                    />
+                </div>
+                    )}}
     return(
         <>
          {posts.length>0 ?
@@ -104,7 +121,9 @@ function Article(){
         <section className="content">
             {post?.content.map((content) => createContent(content))}
         </section> 
-
+        <span className="link-disclaimer">
+        <strong>Hinweis:</strong> Durch Klicken auf Links verlassen Sie unsere Webseite. Wir übernehmen keine Haftung für die Inhalte externer Seiten.
+      </span>
 
     </div> : ""}
         </>

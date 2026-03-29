@@ -15,5 +15,17 @@ type HeadingBlock = {
   level: number;
   text: string;
 };
+type LinkBlock = {
+  type: "link";
+  url: string;
+  label: string;
+  target: "_blank" | "_self";
+};
 
-export type ContentBlock = ParagraphBlock | ImageBlock | HeadingBlock;
+type YouTubeBlock = {
+  type: "youtube";
+  videoUrl: string; // z.B. https://www.youtube.com/watch?v=...
+  videoId: string;  // Extrahiert: dQw4w9WgXcQ
+  caption?: string;
+};
+export type ContentBlock = ParagraphBlock | ImageBlock | HeadingBlock | LinkBlock | YouTubeBlock;

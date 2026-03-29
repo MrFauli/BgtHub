@@ -41,9 +41,11 @@ label{
     gap: 1rem;
 }
 .createBtns{
-    display: flex;
+display: flex;
+    flex-wrap: wrap;
+    gap: 10px;    
     margin-top: 1rem;
-    justify-content: space-between;
+    justify-content: center; 
 }
 .createBtns button{
    color:inherit

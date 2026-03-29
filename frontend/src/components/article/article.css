@@ -105,3 +105,40 @@ section{
   gap: 10px;
 }
 
+.youtubeVideo {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; 
+    border-radius: 8px; 
+    overflow: hidden;  
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.linkBlock {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.link-icon {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+.blog-external-link {
+  font-weight: bold;
+}
+.link-disclaimer {
+  font-size: small;
+
+
+
+}
+
+.youtubeVideo iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}

@@ -19,7 +19,7 @@ function EditProfile(){
     const [step, setStep] = useState<"email" | "code">("email");    
     const navigate = useNavigate();
     const [email,setEmail] = useState("");
-
+    const [convertToAlumni,setConvertToAlumni] = useState(false);
     const [status,setStatus] = useState("")
     const [grade,setGrade] = useState<number>();
     const [mail,setMail] = useState("");
@@ -75,12 +75,12 @@ function EditProfile(){
                 ...prev,
                 grade: grade
             }));
+
             setChangeSaved(true);
             setGradeError("");
         }
     }
     const changeMail = async(e:React.FormEvent<HTMLFormElement>) =>{
-        console.log("Moin")
         e.preventDefault();
          const existMail = await fetch(`${API_URL}/user/email/${mail}`,{
             method: "GET",
@@ -105,9 +105,24 @@ function EditProfile(){
             setMailError("");
             console.log("change Mail")
     }}
+    
+    
     useEffect(()=>{
         if(changeSaved){
             console.log(user)
+            if(convertToAlumni){
+                fetch(`${API_URL}/user/convertToAlumni`,{
+                    method:"PUT",
+                    headers:{"Content-Type": "application/json"},
+                     body: JSON.stringify(user),
+            credentials: "include" // wichtig für Cookies
+            
+                })
+                setConvertToAlumni(false);
+                setChangeSaved(false)
+
+            }
+            else{
             fetch(`${API_URL}/user/change/`, {
             method: "PUT",
             headers: {
@@ -116,7 +131,7 @@ function EditProfile(){
             body: JSON.stringify(user),
             credentials: "include" // wichtig für Cookies
             })
-            setChangeSaved(false)
+            setChangeSaved(false)}
         }
     },[user,changeSaved])
  const checkCode = async(e:React.FormEvent<HTMLFormElement>)=>{
@@ -174,15 +189,25 @@ if (codeTrue) {
             </h1>
             <h2 style={{margin:0}}>Daten ändern</h2>
                {step == "email" ? <>
-            {status == "Schüler" && <form className="editProfileForm" onSubmit={changeGrade}>    
+            {status == "Schüler" && <><form className="editProfileForm" onSubmit={changeGrade}>    
                  
                  <label htmlFor='grade' className='gradeLabel' >Jahrgang</label>
                  <input value={grade} onChange={(e)=>setGrade(Number(e.target.value))} name='grade' type='number'placeholder="12" /> 
                 {<span>{gradeError
                 }</span>}
 
-                <button id='saveGrade' type='submit'>Ändern</button>
-                </form>}
+                <button id='saveGrade' className={"saveButton"} type='submit'>Speichern</button>
+                </form>
+                <form className="editProfileForm" onSubmit={(e)=>{setConvertToAlumni(true); changeMail(e)}}>    
+                 
+                 
+                 <label htmlFor='changeMail' className='changeMailLabel' >Account zum Ehemaliger-Account umwandeln</label>
+                 <input value={mail} onChange={(e)=>setMail(e.target.value)} name='changeMail' type='email' /> 
+                {<span>{mailError
+                }</span>}
+
+                <button id='saveMail' className={"saveButton"} type='submit'>Account umwandeln</button>
+                </form></>}
            {status == "Alumni" && <form className="editProfileForm" onSubmit={changeMail}>    
                  
                  <label htmlFor='changeMail' className='changeMailLabel' >E-Mail</label>
@@ -190,7 +215,7 @@ if (codeTrue) {
                 {<span>{mailError
                 }</span>}
 
-                <button id='saveChangeMail' type='submit'>Ändern</button>
+                <button id='saveChangeMail' className={"saveButton"} type='submit'>Ändern</button>
                 </form>}
 
                 {/* <div className="checkbox-container">

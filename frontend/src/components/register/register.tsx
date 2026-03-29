@@ -228,12 +228,13 @@ const extractEmailParts = (email: string)=> {
 
 const checkEmailType = (email: string): 'OLD' | 'NEW' | 'INVALID' => {
   if (/^[a-z]+\.[a-z]+@/i.test(email)) return 'OLD'; // vorname.nachname
-  if (/^\d+\.[a-z]\.[a-z]@/i.test(email)) return 'NEW'; // 12345.v.n
+  if (/^\d+\.[a-z0-9]+\.[a-z0-9]+@/i.test(email)) return 'NEW';
   return 'INVALID';
 };
 
 const isNameMatchingEmail = (nameInput: string, email: string): boolean => {
   const type = checkEmailType(email);
+  console.log(type);
   const names = normalizeName(nameInput); // Deine bestehende Funktion [cite: 3, 4]
 
   if (type === 'OLD') {

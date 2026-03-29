@@ -1,5 +1,5 @@
 type ParagraphBlock = {
-  type: "paragraph"; // genau dieser Wert
+  type: "paragraph"; 
   text: string;
 };
 
@@ -15,8 +15,21 @@ type HeadingBlock = {
   level: number;
   text: string;
 };
+type LinkBlock = {
+  type: "link";
+  url: string;
+  label: string;
+  target: "_blank" | "_self";
+};
 
-type ContentBlock = ParagraphBlock | ImageBlock | HeadingBlock;
+type YouTubeBlock = {
+  type: "youtube";
+  videoUrl: string; 
+  videoId: string; 
+  caption?: string;
+};
+
+export type ContentBlock = ParagraphBlock | ImageBlock | HeadingBlock | LinkBlock | YouTubeBlock;
 export type postObj ={
     
     "id": number;

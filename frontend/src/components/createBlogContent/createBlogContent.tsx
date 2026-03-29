@@ -77,6 +77,17 @@ function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
                     level: 1,
                     text: ""}
                 break;
+            case "link":
+                 newBlock = {  type: "link",
+                    url: "",
+                    label: "",
+                    target:"_blank"}
+                break
+            case "youtube":
+                 newBlock = {  type: "youtube",
+                    videoUrl: "",
+                    videoId: ""}
+                break
         }
         setBlocks([...blocks,newBlock]);
     } 
@@ -298,9 +309,78 @@ function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
                               
                              </div>
                              );
-                                
+                        case "link":
+                            return(
+                            <div className="contentBlock">
+                            <div className="contentRow">   
+                            <input  style={{borderColor: error[i] ? error[i].length > 0 ?  "red" : "" : ""}}
+                            type="text"  placeholder="Meine Webseite"
+                             value={block.label}
+                             onChange={(e) => updateBlock(e,i, { ...block, label: e.target.value })}/>
+                             <button type="button" className="delete" onClick={(e)=>deleteBlock(e,i)}><img className="icon" src="/assets/delete.png" alt="delete" /></button>
+                             </div>
+                             <input  style={{borderColor: error[i] ? error[i].length > 0 ?  "red" : "" : ""}}
+                            type="text"  placeholder="https://meine-webseite.de"
+                             value={block.url}
+                             onChange={(e) => updateBlock(e,i, { ...block,  url: e.target.value })}/>
+                             
+                              {<span className="error">{error[i]}</span>}
+                              
+                             </div>
+                             );
+                            case "youtube":
+
+
+    const handleYoutubeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const url = e.target.value;
+
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        const id = (match && match[2].length === 11) ? match[2] : "";
+
+
+        updateBlock(e, i, { 
+            ...block, 
+            videoUrl: url, 
+            videoId: id 
+        });
+    };
+
+    return (
+        <div className="contentBlock" key={i}>
+            <div className="contentRow">
+                <input 
+                    type="text" 
+                    placeholder="YouTube Link einfügen..."
+                    value={block.videoUrl}
+                    onChange={handleYoutubeInput}
+                    style={{ 
+                        borderColor: error[i] && error[i].length > 0 ? "red" : "" 
+                    }}
+                />
+                <button 
+                    type="button" 
+                    className="delete" 
+                    onClick={(e) => deleteBlock(e, i)}
+                >
+                    <img className="icon" src="/assets/delete.png" alt="delete" />
+                </button>
+            </div>
+            
+            {/* Kleine Typ-sichere Vorschau */}
+            {block.videoId && (
+                <div style={{fontSize:"small",  marginTop: '5px' }}>
+                    ✓ Video erkannt
+                </div>
+            )}
+            
+            {error[i] && <span className="error">{error[i]}</span>}
+        </div>
+    );
+}
+                                       
                             
-                    }
+                    
                 
                 })}
 
@@ -310,6 +390,8 @@ function CreateBlogContent(_props:{},ref: React.Ref<contentFuncs>){
                 <button type="button"  onClick={() => addBlock("heading")}>Header</button>
                 <button type="button" onClick={() => addBlock("paragraph")}>Paragraph</button>
                 <button type="button" onClick={() => addBlock("image")}>Bild</button>
+                <button type="button" onClick={() => addBlock("link")}>Link</button>
+                <button type="button" onClick={() => addBlock("youtube")}>YouTube</button>
             </div>
             
         </div>

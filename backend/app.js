@@ -29,8 +29,8 @@ origin: function (origin, callback) {
 }));
 const API_URL = process.env.NODE_ENV === 'production' ? '/api' : '';
 const UPLOAD_DIR = process.env.NODE_ENV === 'production' 
-    ? '/home/gianluca/BgtHub/external_uploads'  // Absoluter Pfad auf dem Server
-    : path.join(__dirname, '../uploads'); // Lokal wie bisher
+    ? process.env.UPLOAD_PATH 
+    : path.join(__dirname, '../uploads'); 
 app.use('/uploads', express.static(UPLOAD_DIR));
 app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
@@ -140,10 +140,10 @@ const alumniInviteEmail = () => {
   `;
 }
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  service: process.env.EMAIL_SERVICE,
   auth: {
-    user: "techsloth.info@gmail.com",
-    pass:  process.env.EMAIL_PASS, // nicht dein normales Passwort!
+    user: process.env.EMAIL_USER,
+    pass:  process.env.EMAIL_PASS, 
   },
 });
 
@@ -152,11 +152,12 @@ const transporter = nodemailer.createTransport({
 const { types } = require('pg');
 types.setTypeParser(20, val => parseInt(val, 10));
 const pool = new Pool({
-  user: process.env.DB_NAME,
+  user: process.env.DB_USER,
   host: 'localhost',
-  database: 'bgtHub',
+
   password: process.env.DB_PASS,
-  port: 5432,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 })
 console.log(`Start:`);
 // 🟡 Speicherort + Dateiname festlegen
@@ -342,12 +343,14 @@ app.put('/projects',ensureAuthenticated,upload.array('files'),async(req,res,next
             console.log("Updated");
 
            oldImages.forEach((imgPath) => {
-            const fullPath = path.join(UPLOAD_DIR,imgPath);
-            console.log(fullPath);
-            fs.unlink(fullPath, (err) => {
-              if (err) console.warn("❌ Bild konnte nicht gelöscht werden:", imgPath, err.message);
-              else console.log("🗑️ Gelöscht:", imgPath);
-            });
+            
+    const fileName = path.basename(imgPath);
+    const fullPath = path.join(UPLOAD_DIR, fileName);
+
+    fs.unlink(fullPath, (err) => {
+        if (err) console.warn("❌ Bild konnte nicht gelöscht werden:", fileName, err.message);
+        else console.log("🗑️ Gelöscht:", imgPath);
+    });
           });
             res.status(200).send(true);
           })
@@ -499,7 +502,7 @@ app.get('/user/email/:email',(req,res,next)=>{
       throw error;
     }
     if(result.rows.length > 0){
-
+      
       if(!result.rows[0].name && result.rows[0].status == "Alumni"){
         
         res.status(200).json({ status: "Alumni" });
@@ -509,8 +512,20 @@ app.get('/user/email/:email',(req,res,next)=>{
 
     }
     else{
-      console.log(false);
-        res.status(200).json({ status: false });;
+      pool.query('SELECT * FROM authors WHERE authors.schueler_mail = $1',[email],(error,result)=>{
+        if(error){
+          res.status(400).send();
+          throw error;
+        }
+        if(result.rows.length > 0){
+          res.status(200).json({ status: true });
+        }
+        else{
+           console.log(false);
+        res.status(200).json({ status: false });
+        }
+      })
+     
     }
   
   })
@@ -520,7 +535,7 @@ app.get('/user/authcode/:email',async(req,res,next)=>{
   const code = Math.floor(100000 + Math.random() * 900000);
   try{
     const info = await transporter.sendMail({
-    from: '"BGT-HUB" <techsloth.info@gmail.com>',
+    from: '"BGT-HUB" ',
     to:req.params.email,
     subject: "Dein Bestätigungscode 🔐",
     text: `Dein Code lautet: ${code}`,
@@ -667,7 +682,7 @@ app.post('/user/invite/:email',ensureAuthenticated,(req,res,next)=>{
                 }
                 try{
                   const info = await transporter.sendMail({
-                  from: '"BGT-HUB" <techsloth.info@gmail.com>',
+                  from: '"BGT-HUB"',
                   to:mail,
                   subject: "Einladung zum BGT-Hub",
                   text: `Hey du da 👋
@@ -694,7 +709,7 @@ dein BGT-Hub Team`,
                   res.status(400).send(error.message);
                 }
 
-              })      }
+              }) }
   })
 })
 app.put("/user/change",async(req,res,next)=>{
@@ -709,6 +724,27 @@ app.put("/user/change",async(req,res,next)=>{
               }
               res.status(201).send();
             })
+})
+app.put("/user/convertToAlumni",async(req,res,next)=>{
+  const body = req.body;
+  const author_id = req.session.passport.user;
+   pool.query('SELECT * FROM authors WHERE author_id = $1',[author_id],(error,result)=>{
+    if(error){
+      res.status(400).send();
+      throw error;
+    }
+    const studentMail = result.rows[0].email;
+     pool.query(`UPDATE authors
+              SET schueler_mail = $1, email = $2, status = $3
+              WHERE author_id = $4;`,[studentMail,body.email,"Alumni",author_id],(error,result)=>{
+              if(error){
+                res.status(400).send();
+                throw error;
+              }
+              res.status(201).send();
+            })
+  })
+  
 })
 app.put('/user/register/',async(req,res,next)=>{
 
