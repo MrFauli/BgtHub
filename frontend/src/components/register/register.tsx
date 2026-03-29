@@ -65,7 +65,7 @@ function RegisterSide(){
               setRegisterError((prev)=>({
                 ...prev,
                 name:`Bitte echten Namen aus der Email verwenden.\n
-                        Fehler? Email an info@bgt-hub.me!`
+                        Fehler? Email an Support/Admin!`
             }));}
             if(grade != 11 && grade != 12 && grade != 13){
                  setRegisterError((prev)=>({
@@ -123,7 +123,7 @@ setStep("code");
         else if(!existEmail && email.length > 0 && status=="Alumni"){
           setRegisterError((prev)=>({
                 ...prev,
-                email:"Bitte an info@bgt-hub.me E-Mail schreiben, damit wir bestätigen können dass du ein ehemaliger Schüler bist."}));
+                email:"Bitte an Admin/Lehrkraft E-Mail schreiben, damit wir bestätigen können dass du ein ehemaliger Schüler bist."}));
         }
     },[emailTrigger]);
     const checkCode = async(e:React.FormEvent<HTMLFormElement>)=>{

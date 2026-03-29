@@ -7,7 +7,7 @@
     height: 1.4rem;
     width: 1.5px;
     background: black;
-
+    
 }
 @keyframes animation_blink{
     0%,50%{opacity: 1; }

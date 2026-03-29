@@ -3,7 +3,7 @@ import {useState,useEffect} from 'react';
 import BlogPreview from '../blogPreview/blogPreview';
 import type { postObj } from '../../types/posts';
 import './projekt-side.css';
-import { API_URL } from '../../config';
+import { API_URL } from '../../config.ts';
 function ProjektSide(){
     const [filter,setFilter] = useState("")
     const [posts,setPosts] = useState<postObj[]>([]);

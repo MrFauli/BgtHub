@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { postObj } from "../../types/posts";
 import BackBtn from "../backBtn/backBtn";
 import './author-projects.css';
-import { API_URL } from "../../config";
+import { API_URL } from '../../config.ts';
 function AuthorProjects(){
     const {author} = useParams();
         const [posts,setPosts] = useState<postObj[]>([]);
