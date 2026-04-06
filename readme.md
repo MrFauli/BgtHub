@@ -12,13 +12,13 @@ Das BGT-Hub ist eine Web-App, welche es Schülern ermöglicht, ihre (Schul)proje
 - Loginsystem, Passwort-Reset, etc.
 - Projektmaske mit der Möglichkeit, Text, Bilder, Videos & Links einzufügen
 - Admin-Portal für Lehrkräfte zum freischalten von Artikeln und einladen von Alumnis
----
+
 ## ⚙️ Tech Stack
 
 - **Frontend:** React + TypeScript + Vite  
 - **Backend:** Express + Node.js + PostgreSQL  
 - **Server** Nginx + Ngrok + PM2
----
+
 ##  Hinweis
 
 Das Projekt ist privat entwickelt und als Projektarbeit an der BBS-ME finalisiert wurden. Zum jetzigen Zeitpunkt ist veröffentlichung in Klärung. 
