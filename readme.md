@@ -2,7 +2,7 @@
 
 ![Project Hub Banner](./frontend/public/assets/bgt-hub-projektPreview.png)  
 
----
+
 
 ## 🚀 Das Projekt
 Das BGT-Hub ist eine Web-App, welche es Schülern ermöglicht, ihre (Schul)projekte zu veröffnetlichen und so mit anderen zu teilen. Dadurch kriegt sowohl der Schüler eine Fläche, als auch das andere sich inspirieren können als auch das dies für die Schule als Werbemöglichkeit dienen kann. 
