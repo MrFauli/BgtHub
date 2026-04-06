@@ -81,10 +81,10 @@ height: max-content;
 .selected{
     border: 2px solid white;
 }
-.error{
-    font-size: small;
-    color: red;
-    margin-top: 4px;
+form span.error{
+  margin-top: 8px;
+  color:red !important;
+  font-size: small;
 }
 #uploadBox{
     position: relative;

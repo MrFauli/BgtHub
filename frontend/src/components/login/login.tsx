@@ -96,7 +96,7 @@ function LoginSide(){
                 <input name='mail' type='email'placeholder="your.name@bbs-me.org" value={email} onChange={(e)=>setEmail(e.target.value)} />
                 <label htmlFor='password' className='passwordLabel' >Passwort</label>
                 <input type="password" id="password" placeholder="••••••••" value={password} onChange={(e)=>setPassword(e.target.value)} />
-                {<span>{loginError}</span>}
+                {<span className="error">{loginError}</span>}
                 <Link style={{color:"black",textDecoration:"underline"}} to={"/passwort-vergessen"}>Passwort vergessen? Hier klicken</Link>
                 
                 <button id='signInBtn' type='submit'>Einloggen</button>

@@ -316,19 +316,19 @@ const  validatePassword =(password: string)=> {
                   <button type="button" className={status == "Lehrer" ? "selectedStatus" : ""} onClick={()=>setStatus("Lehrer")}><img className="statusIcon" style={{paddingTop:"4px"}} src='/assets/teacher.png'/></button>
                   <button type="button" className={status == "Alumni" ? "selectedStatus" : ""} onClick={()=>setStatus("Alumni")}><img className="statusIcon" src='/assets/alumni.png'/></button>
                 </div>
-                {<span>{registerError.status}</span>}
+                {<span className="error">{registerError.status}</span>}
                 <label htmlFor='mail' className='mailLabel' >Email</label>
                 <input value={email} onChange={(e)=>setEmail(e.target.value)} name='mail' type='email'placeholder={status == "Schüler" ? "your.name@bbs-me.org" : status== "Lehrer"? "your.name@bbs-me.de" : "your.name@email.de"} />
-                {<span>{registerError.email}</span>}
+                {<span className="error">{registerError.email}</span>}
                 <label htmlFor='name' className='nameLabel' >Vor- und Nachname</label>
                 <input value={name} onChange={(e)=>setName(e.target.value)} name='name' type='text'placeholder="Albert Einstein" />
-                {<span>{registerError.name}</span>}
+                {<span className="error">{registerError.name}</span>}
                 {status == "Schüler" ? <><label htmlFor='grade' className='gradeLabel' >Jahrgang</label>
                 <input value={grade} onChange={(e)=>setGrade(Number(e.target.value))} name='grade' type='number'placeholder="12" /> 
-                {<span>{registerError.grade}</span>} </>: <></>}
+                {<span className="error">{registerError.grade}</span>} </>: <></>}
                 <label htmlFor='password' className='passwordLabel' >Passwort</label>
                 <input value={password} onChange={(e)=>setPassword(e.target.value)} name='name' type='password'placeholder="••••••••" />
-                {<span>{registerError.password}</span>}
+                {<span className="error">{registerError.password}</span>}
                 <div className="checkbox-container">
                         <input 
                           type="checkbox" 
@@ -342,7 +342,7 @@ const  validatePassword =(password: string)=> {
                     Ich habe die Datenschutzerklärung gelesen.
                   </label>
                   </div>
-                {<span>{registerError.check}</span>}
+                {<span className="error">{registerError.check}</span>}
                 <button id='registerBtn' type='submit'>Regristieren</button>
                 <p>Du hast schon ein Account? <Link to='/login' style={{color:'inherit',textDecoration:'underline'}} >Anmelden</Link></p>
             </form>
@@ -367,7 +367,7 @@ const  validatePassword =(password: string)=> {
                 ))}
                 </div> 
                                 
-                {<span >{codeError}</span>}
+                {<span className="error">{codeError}</span>}
                 <button id='registerBtn' type='submit'>Regristieren</button>
                 </form>}
               

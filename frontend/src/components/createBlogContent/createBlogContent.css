@@ -51,7 +51,11 @@ display: flex;
    color:inherit
 }
 
-
+form span.error{
+  margin-top: 8px;
+  color:red !important;
+  font-size: small;
+}
 .contentBlock{
     display: flex;
     flex-direction: column;
