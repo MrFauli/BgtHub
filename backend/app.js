@@ -110,7 +110,7 @@ const alumniInviteEmail = () => {
                   <div style="text-align:left;padding:0 20px 20px 20px;">
                     <ol style="font-size:15px;line-height:1.8;margin:0;padding-left:20px;">
                       <li style="margin-bottom:10px;">
-                        Gehe auf <a href="https://bgt-hub.me" style="color:#9fc245;text-decoration:none;font-weight:bold;">bgt-hub.me</a>
+                        Gehe <a href="https://bbs-me.de" style="color:#9fc245;text-decoration:none;font-weight:bold;">bbs-me.de</a> aufs BGT-Hub
                       </li>
                       <li style="margin-bottom:10px;">
                         Gehe auf Upload und dann auf Registrieren.
@@ -140,14 +140,14 @@ const alumniInviteEmail = () => {
   `;
 }
 const transporter = nodemailer.createTransport({
-  service: process.env.EMAIL_SERVICE,
+  host: process.env.EMAIL_HOST,
+  port: parseInt(process.env.EMAIL_PORT),
+  secure: process.env.EMAIL_PORT == "465", // nur bei Port 465 true
   auth: {
     user: process.env.EMAIL_USER,
-    pass:  process.env.EMAIL_PASS, 
+    pass: process.env.EMAIL_PASS,
   },
 });
-
-
 
 const { types } = require('pg');
 types.setTypeParser(20, val => parseInt(val, 10));

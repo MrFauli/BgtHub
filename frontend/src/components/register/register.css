@@ -47,9 +47,9 @@ label {
   margin-top: 1rem;
   transition: all 0.3s;
 }
-form span{
+form span.error{
   margin-top: 8px;
-  color:red;
+  color:red !important;
   font-size: small;
 }
 .codeInputs{

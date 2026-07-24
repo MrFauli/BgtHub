@@ -20,7 +20,7 @@ function TopFooter(){
     return(
         <div className="top-footer">
             <div className="logo-footer" ><Logo/></div>
-            <div className="credits">with ❤️ made by <a target="_blank" href="https://github.com/MrFauli">Gianluca</a></div>
+            <div className="credits">with ❤️ made by <a target="_blank" href="https://www.linkedin.com/in/gianlucacar-rossi/">Gianluca</a></div>
             <div><a target="_blank" href="https://github.com/MrFauli/BgtHub"><div className="dev-status"><div className="red-point"></div> in Development</div></a></div>
             <button className="color-mode" onClick={toogleMode}><img  src={lightMode? "/assets/sun.png" : "/assets/moon.png"} className="mode-icon"/></button>
         </div>
